@@ -1,0 +1,88 @@
+/* ── App Cards ── */
+.grid.cards > ul > li {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.grid.cards > ul > li:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* ── App Icon (Android-style rounded square) ── */
+.app-icon {
+  font-size: 4rem !important;
+  border-radius: 18%;
+}
+
+/* ── Google Play Button ── */
+.md-button--play {
+  background-color: #01875f !important;
+  border-color: #01875f !important;
+  color: #fff !important;
+}
+
+.md-button--play:hover {
+  background-color: #016a4c !important;
+  border-color: #016a4c !important;
+}
+
+/* ── App Header ── */
+.app-header {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+/* ── Screenshot Gallery ── */
+.screenshot-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.screenshot-gallery .screenshot {
+  max-width: 260px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.screenshot-gallery .screenshot:hover {
+  transform: scale(1.05);
+}
+
+/* ── Release Notes Date ── */
+.release-date {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: var(--md-default-fg-color--light);
+  font-style: italic;
+  margin-bottom: 0.5rem;
+}
+
+/* ── Home Tagline ── */
+.home-tagline {
+  text-align: center;
+  color: var(--md-default-fg-color--light);
+  margin-top: 2rem;
+}
+
+/* ── Dark Mode Adjustments ── */
+[data-md-color-scheme="slate"] .grid.cards > ul > li:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+[data-md-color-scheme="slate"] .screenshot-gallery .screenshot {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Mobile Responsive ── */
+@media screen and (max-width: 768px) {
+  .screenshot-gallery .screenshot {
+    max-width: 100%;
+  }
+
+  .grid.cards > ul > li {
+    margin-bottom: 0.5rem;
+  }
+}
