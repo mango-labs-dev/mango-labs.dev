@@ -5,10 +5,11 @@ category: Games
 status: upcoming
 featured: true
 order: 1
+icon: ./icon.webp
 iconGlyph: mdi:grid
 iconColors:
-  from: "#ff9f2a"
-  to: "#b3430a"
+  from: "#2e3e27"
+  to: "#4a6438"
 features:
   - icon: mdi:auto-fix
     title: Adaptive difficulty

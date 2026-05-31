@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
@@ -8,16 +9,24 @@ interface Props {
 }
 
 const { app, variant = 'default' } = Astro.props;
-const { name, tagline, category, status, iconGlyph, iconColors } = app.data;
+const { name, tagline, category, status, icon, iconGlyph, iconColors } = app.data;
 const from = iconColors?.from ?? '#ff9f2a';
 const to = iconColors?.to ?? '#b3430a';
+const iconSize = variant === 'compact' ? 52 : 64;
 const statusLabel =
   status === 'released' ? null : status === 'beta' ? 'Beta' : 'Coming soon';
 ---
 
 <a href={`/apps/${app.id}`} class:list={['app-card', `variant-${variant}`, 'card']}>
-  <div class="app-card-icon" style={`background: linear-gradient(135deg, ${from}, ${to});`}>
-    {iconGlyph && <Icon name={iconGlyph} />}
+  <div
+    class="app-card-icon"
+    style={icon ? undefined : `background: linear-gradient(135deg, ${from}, ${to});`}
+  >
+    {icon ? (
+      <Image src={icon} alt={`${name} icon`} width={iconSize * 2} height={iconSize * 2} loading="lazy" />
+    ) : (
+      iconGlyph && <Icon name={iconGlyph} />
+    )}
   </div>
   <div class="app-card-body">
     <div class="app-card-meta">
@@ -53,12 +62,20 @@ const statusLabel =
     display: grid;
     place-items: center;
     color: #fff;
+    overflow: hidden;
     box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.35);
   }
 
   .app-card-icon :global(svg) {
     width: 32px;
     height: 32px;
+  }
+
+  .app-card-icon :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   .variant-compact .app-card-icon {
