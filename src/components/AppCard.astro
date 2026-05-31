@@ -1,0 +1,132 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  app: CollectionEntry<'apps'>;
+  variant?: 'default' | 'compact';
+}
+
+const { app, variant = 'default' } = Astro.props;
+const { name, tagline, category, status, iconGlyph, iconColors } = app.data;
+const from = iconColors?.from ?? '#ff9f2a';
+const to = iconColors?.to ?? '#b3430a';
+const statusLabel =
+  status === 'released' ? null : status === 'beta' ? 'Beta' : 'Coming soon';
+---
+
+<a href={`/apps/${app.id}`} class:list={['app-card', `variant-${variant}`, 'card']}>
+  <div class="app-card-icon" style={`background: linear-gradient(135deg, ${from}, ${to});`}>
+    {iconGlyph && <Icon name={iconGlyph} />}
+  </div>
+  <div class="app-card-body">
+    <div class="app-card-meta">
+      <span class="app-card-category">{category}</span>
+      {statusLabel && <span class="app-card-status">{statusLabel}</span>}
+    </div>
+    <h3 class="app-card-name">{name}</h3>
+    <p class="app-card-tagline">{tagline}</p>
+  </div>
+  <span class="app-card-arrow" aria-hidden="true">
+    <Icon name="mdi:arrow-top-right" />
+  </span>
+</a>
+
+<style>
+  .app-card {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 1.25rem;
+    align-items: center;
+    padding: 1.25rem;
+    color: var(--fg);
+  }
+
+  .variant-default {
+    padding: 1.5rem;
+  }
+
+  .app-card-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 18px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.35);
+  }
+
+  .app-card-icon :global(svg) {
+    width: 32px;
+    height: 32px;
+  }
+
+  .variant-compact .app-card-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+  }
+
+  .variant-compact .app-card-icon :global(svg) {
+    width: 26px;
+    height: 26px;
+  }
+
+  .app-card-body {
+    min-width: 0;
+  }
+
+  .app-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--fg-muted);
+    margin-bottom: 0.4rem;
+  }
+
+  .app-card-status {
+    padding: 0.15rem 0.5rem;
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--accent) 14%, transparent);
+    color: var(--accent);
+    letter-spacing: 0.04em;
+  }
+
+  .app-card-name {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+  }
+
+  .app-card-tagline {
+    margin: 0.3rem 0 0;
+    color: var(--fg-muted);
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
+  .app-card-arrow {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 9999px;
+    color: var(--fg-muted);
+    transition: transform 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .app-card-arrow :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .app-card:hover .app-card-arrow {
+    color: var(--accent);
+    background: color-mix(in oklab, var(--accent) 10%, transparent);
+    transform: translate(2px, -2px);
+  }
+</style>

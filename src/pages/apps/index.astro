@@ -1,0 +1,121 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AppCard from '~/components/AppCard.astro';
+
+const apps = await getCollection('apps');
+const sorted = apps.sort((a, b) => a.data.order - b.data.order);
+
+const groups = {
+  released: sorted.filter((a) => a.data.status === 'released'),
+  beta: sorted.filter((a) => a.data.status === 'beta'),
+  upcoming: sorted.filter((a) => a.data.status === 'upcoming'),
+};
+---
+
+<BaseLayout
+  title="Apps"
+  description="Every app Mango Labs has shipped — and the ones we're working on next."
+>
+  <section class="container-page page-head">
+    <h1>Our apps</h1>
+    <p>
+      A small, growing collection. Browse what's out, what's in beta, and what's
+      cooking next.
+    </p>
+  </section>
+
+  <section class="container-page page-body">
+    {groups.released.length > 0 && (
+      <div class="app-group">
+        <h2 class="group-title">Released</h2>
+        <div class="apps-grid">
+          {groups.released.map((app) => <AppCard app={app} />)}
+        </div>
+      </div>
+    )}
+
+    {groups.beta.length > 0 && (
+      <div class="app-group">
+        <h2 class="group-title">In beta</h2>
+        <div class="apps-grid">
+          {groups.beta.map((app) => <AppCard app={app} />)}
+        </div>
+      </div>
+    )}
+
+    {groups.upcoming.length > 0 && (
+      <div class="app-group">
+        <h2 class="group-title">In the kitchen</h2>
+        <p class="group-note">
+          These are in development. Pages exist so we can polish copy and design
+          ahead of launch — Play Store links arrive as each one ships.
+        </p>
+        <div class="apps-grid">
+          {groups.upcoming.map((app) => <AppCard app={app} />)}
+        </div>
+      </div>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .page-head {
+    padding-block: 4rem 2rem;
+    max-width: 48rem;
+  }
+
+  .page-head h1 {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    margin: 0 0 1rem;
+  }
+
+  .page-head p {
+    font-size: 1.1rem;
+    color: var(--fg-muted);
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  .page-body {
+    padding-bottom: 4rem;
+  }
+
+  .app-group {
+    margin-top: 3rem;
+  }
+
+  .app-group:first-child {
+    margin-top: 0;
+  }
+
+  .group-title {
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .group-note {
+    color: var(--fg-muted);
+    margin: 0 0 1.5rem;
+    max-width: 42rem;
+    line-height: 1.55;
+  }
+
+  .apps-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .apps-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .apps-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

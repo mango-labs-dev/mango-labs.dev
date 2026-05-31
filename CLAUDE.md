@@ -1,0 +1,2 @@
+- when commit use only title with short update on the work
+- do not use detailed description for commit and skip co-author as well

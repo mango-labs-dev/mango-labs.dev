@@ -1,0 +1,471 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AppCard from '~/components/AppCard.astro';
+import { site } from '~/site.config';
+
+export async function getStaticPaths() {
+  const apps = await getCollection('apps');
+  return apps.map((app) => ({
+    params: { slug: app.id },
+    props: { app },
+  }));
+}
+
+const { app } = Astro.props;
+const { Content } = await render(app);
+
+const {
+  name,
+  tagline,
+  category,
+  status,
+  iconGlyph,
+  iconColors,
+  features,
+  playStoreUrl,
+  version,
+  packageId,
+  minSdk,
+  targetSdk,
+  techStack,
+  supportEmail,
+  privacyPolicyUrl,
+  screenshots,
+} = app.data;
+
+const from = iconColors?.from ?? '#ff9f2a';
+const to = iconColors?.to ?? '#b3430a';
+const statusLabel =
+  status === 'released' ? 'Available now' : status === 'beta' ? 'In beta' : 'Coming soon';
+const contactEmail = supportEmail ?? site.supportEmail;
+const privacyHref = privacyPolicyUrl ?? `/privacy/${app.id}`;
+
+const related = (await getCollection('apps'))
+  .filter((a) => a.id !== app.id)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+---
+
+<BaseLayout title={name} description={tagline}>
+  <section class="app-hero">
+    <div class="container-page app-hero-inner">
+      <a href="/apps" class="breadcrumb">
+        <Icon name="mdi:arrow-left" />
+        All apps
+      </a>
+
+      <div class="app-hero-card">
+        <div class="app-hero-icon" style={`background: linear-gradient(135deg, ${from}, ${to});`}>
+          {iconGlyph && <Icon name={iconGlyph} />}
+        </div>
+
+        <div class="app-hero-text">
+          <div class="app-hero-meta">
+            <span class="meta-pill category">{category}</span>
+            <span class="meta-pill status">{statusLabel}</span>
+            {version && <span class="meta-pill">v{version}</span>}
+          </div>
+          <h1>{name}</h1>
+          <p class="app-hero-tagline">{tagline}</p>
+
+          <div class="app-hero-cta">
+            {playStoreUrl ? (
+              <a href={playStoreUrl} class="btn btn-primary" target="_blank" rel="noopener">
+                <Icon name="simple-icons:googleplay" />
+                Get it on Google Play
+              </a>
+            ) : (
+              <span class="btn btn-ghost" aria-disabled="true">
+                <Icon name="mdi:clock-outline" />
+                {statusLabel}
+              </span>
+            )}
+            <a href={`mailto:${contactEmail}`} class="btn btn-ghost">
+              <Icon name="mdi:email-outline" />
+              Support
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {screenshots.length > 0 && (
+    <section class="container-page section">
+      <h2 class="section-title">Screenshots</h2>
+      <div class="screenshots">
+        {screenshots.map((src) => (
+          <img src={src.src} width={src.width} height={src.height} alt="" loading="lazy" />
+        ))}
+      </div>
+    </section>
+  )}
+
+  {features.length > 0 && (
+    <section class="container-page section">
+      <h2 class="section-title">What you'll love</h2>
+      <div class="features">
+        {features.map((f) => (
+          <div class="feature">
+            <div class="feature-icon">
+              {f.icon && <Icon name={f.icon} />}
+            </div>
+            <div>
+              <h3>{f.title}</h3>
+              <p>{f.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  <section class="container-page section">
+    <div class="prose">
+      <Content />
+    </div>
+  </section>
+
+  {(packageId || techStack.length > 0 || minSdk) && (
+    <section class="container-page section">
+      <details class="tech-details">
+        <summary>For the curious — technical details</summary>
+        <dl>
+          {packageId && (
+            <>
+              <dt>Package ID</dt>
+              <dd><code>{packageId}</code></dd>
+            </>
+          )}
+          {minSdk && (
+            <>
+              <dt>Min Android</dt>
+              <dd>Android {minSdk - 20} (SDK {minSdk})</dd>
+            </>
+          )}
+          {targetSdk && (
+            <>
+              <dt>Target Android</dt>
+              <dd>Android {targetSdk - 20} (SDK {targetSdk})</dd>
+            </>
+          )}
+          {techStack.length > 0 && (
+            <>
+              <dt>Built with</dt>
+              <dd>{techStack.join(' · ')}</dd>
+            </>
+          )}
+        </dl>
+      </details>
+    </section>
+  )}
+
+  <section class="container-page section support-section">
+    <div class="support-card">
+      <h2>Questions, ideas, bug reports?</h2>
+      <p>
+        We read everything. Drop a line at
+        <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+      </p>
+      <p class="privacy-link">
+        See our <a href={privacyHref}>{name} privacy policy</a>.
+      </p>
+    </div>
+  </section>
+
+  {related.length > 0 && (
+    <section class="container-page section">
+      <h2 class="section-title">More from Mango Labs</h2>
+      <div class="related-grid">
+        {related.map((r) => <AppCard app={r} variant="compact" />)}
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .app-hero {
+    position: relative;
+    padding-block: 3rem 2rem;
+  }
+
+  .breadcrumb {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--fg-muted);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+
+  .breadcrumb:hover {
+    color: var(--accent);
+  }
+
+  .app-hero-card {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .app-hero-card {
+      grid-template-columns: auto 1fr;
+      gap: 3rem;
+    }
+  }
+
+  .app-hero-icon {
+    width: 128px;
+    height: 128px;
+    border-radius: 32px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    box-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.5);
+  }
+
+  .app-hero-icon :global(svg) {
+    width: 64px;
+    height: 64px;
+  }
+
+  .app-hero-meta {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .meta-pill {
+    padding: 0.3rem 0.7rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    color: var(--fg-muted);
+    letter-spacing: 0.03em;
+  }
+
+  .meta-pill.status {
+    background: color-mix(in oklab, var(--accent) 14%, transparent);
+    color: var(--accent);
+    border-color: transparent;
+  }
+
+  .app-hero-text h1 {
+    font-size: clamp(2.25rem, 5vw, 3.5rem);
+    margin: 0 0 0.75rem;
+  }
+
+  .app-hero-tagline {
+    font-size: clamp(1.1rem, 1.4vw, 1.35rem);
+    color: var(--fg-muted);
+    line-height: 1.5;
+    margin: 0 0 1.75rem;
+    max-width: 38rem;
+  }
+
+  .app-hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .app-hero-cta .btn :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .section {
+    padding-block: 3rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.6rem, 2.5vw, 2rem);
+    margin: 0 0 1.5rem;
+  }
+
+  .screenshots {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .screenshots img {
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+  }
+
+  .features {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .features {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem 3rem;
+    }
+  }
+
+  .feature {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .feature-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: color-mix(in oklab, var(--accent) 14%, transparent);
+    color: var(--accent);
+  }
+
+  .feature-icon :global(svg) {
+    width: 22px;
+    height: 22px;
+  }
+
+  .feature h3 {
+    margin: 0 0 0.35rem;
+    font-size: 1.1rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+
+  .feature p {
+    margin: 0;
+    color: var(--fg-muted);
+    line-height: 1.55;
+  }
+
+  .prose {
+    max-width: 42rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--fg);
+  }
+
+  .prose :global(p) {
+    margin: 0 0 1.25rem;
+  }
+
+  .prose :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .prose :global(strong) {
+    color: var(--fg);
+  }
+
+  .tech-details {
+    border: 1px solid var(--border);
+    border-radius: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--bg-elevated);
+    max-width: 42rem;
+  }
+
+  .tech-details summary {
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--fg-muted);
+    list-style: none;
+  }
+
+  .tech-details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .tech-details summary::after {
+    content: " →";
+    transition: transform 0.2s ease;
+    display: inline-block;
+  }
+
+  .tech-details[open] summary::after {
+    transform: rotate(90deg);
+  }
+
+  .tech-details dl {
+    margin: 1.25rem 0 0;
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.5rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .tech-details dt {
+    color: var(--fg-muted);
+  }
+
+  .tech-details code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 0.9rem;
+    background: var(--bg);
+    padding: 0.1rem 0.4rem;
+    border-radius: 6px;
+  }
+
+  .support-section {
+    padding-block: 2rem;
+  }
+
+  .support-card {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .support-card h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.5rem;
+  }
+
+  .support-card p {
+    margin: 0;
+    color: var(--fg-muted);
+  }
+
+  .support-card a {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .privacy-link {
+    margin-top: 0.5rem !important;
+    font-size: 0.9rem;
+  }
+
+  .related-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .related-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

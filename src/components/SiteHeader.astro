@@ -1,0 +1,128 @@
+---
+import { Icon } from 'astro-icon/components';
+import { site } from '~/site.config';
+
+const pathname = new URL(Astro.request.url).pathname;
+const isActive = (href: string) =>
+  href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(href + '/');
+---
+
+<header class="site-header">
+  <div class="container-page header-inner">
+    <a href="/" class="brand" aria-label={`${site.name} home`}>
+      <span class="brand-mark" aria-hidden="true">
+        <Icon name="mdi:fruit-pineapple" />
+      </span>
+      <span class="brand-text">{site.name}</span>
+    </a>
+
+    <nav class="site-nav" aria-label="Primary">
+      {site.nav.map((item) => (
+        <a href={item.href} class:list={['nav-link', { active: isActive(item.href) }]}>
+          {item.label}
+        </a>
+      ))}
+    </nav>
+
+    <button
+      class="theme-toggle"
+      type="button"
+      aria-label="Toggle theme"
+      data-theme-toggle
+    >
+      <Icon name="mdi:weather-sunny" class="icon-light" />
+      <Icon name="mdi:weather-night" class="icon-dark" />
+    </button>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: saturate(140%) blur(10px);
+    background: color-mix(in oklab, var(--bg) 80%, transparent);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    height: 64px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+  }
+
+  .brand-mark {
+    display: inline-grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--color-mango-400), var(--color-mango-600));
+    color: #fff;
+    font-size: 1.1rem;
+  }
+
+  .site-nav {
+    display: flex;
+    gap: 0.25rem;
+    margin-left: auto;
+  }
+
+  .nav-link {
+    padding: 0.5rem 0.9rem;
+    border-radius: 9999px;
+    color: var(--fg-muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.15s ease, background-color 0.15s ease;
+  }
+
+  .nav-link:hover {
+    color: var(--fg);
+    background: var(--bg-elevated);
+  }
+
+  .nav-link.active {
+    color: var(--accent);
+    background: color-mix(in oklab, var(--accent) 12%, transparent);
+  }
+
+  .theme-toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 9999px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--fg);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .theme-toggle:hover {
+    background: var(--bg-elevated);
+    border-color: var(--fg-muted);
+  }
+
+  .theme-toggle :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .theme-toggle .icon-dark { display: none; }
+  :global(.dark) .theme-toggle .icon-light { display: none; }
+  :global(.dark) .theme-toggle .icon-dark { display: inline; }
+</style>

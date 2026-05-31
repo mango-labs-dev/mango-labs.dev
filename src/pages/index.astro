@@ -1,0 +1,262 @@
+---
+import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import AppCard from '~/components/AppCard.astro';
+import { site } from '~/site.config';
+
+const apps = await getCollection('apps');
+const featured = apps
+  .filter((a) => a.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+const totalApps = apps.length;
+---
+
+<BaseLayout>
+  <section class="hero">
+    <div class="container-page hero-inner">
+      <span class="eyebrow">
+        <span class="eyebrow-dot" aria-hidden="true"></span>
+        New apps in the kitchen
+      </span>
+      <h1 class="hero-title">
+        Small Android apps,<br />
+        <em>thoughtfully</em> built.
+      </h1>
+      <p class="hero-lede">
+        We make calm, useful apps for everyday moments — puzzles to unwind with,
+        utilities that get out of your way, productivity tools that don't try
+        to run your life.
+      </p>
+      <div class="hero-cta">
+        <a href="/apps" class="btn btn-primary">
+          See all apps
+          <Icon name="mdi:arrow-right" />
+        </a>
+        <a href="/about" class="btn btn-ghost">About Mango Labs</a>
+      </div>
+    </div>
+    <div class="hero-glow" aria-hidden="true"></div>
+  </section>
+
+  <section class="container-page featured">
+    <header class="section-head">
+      <h2>In the spotlight</h2>
+      <p>The apps closest to release. More coming through the year.</p>
+    </header>
+
+    <div class="featured-grid">
+      {featured.map((app) => <AppCard app={app} />)}
+    </div>
+
+    <div class="featured-footer">
+      <a href="/apps" class="featured-link">
+        Browse all {totalApps} apps
+        <Icon name="mdi:arrow-right" />
+      </a>
+    </div>
+  </section>
+
+  <section class="container-page values">
+    <div class="value">
+      <div class="value-icon"><Icon name="mdi:weather-sunset" /></div>
+      <h3>Calm by default</h3>
+      <p>No streaks badgering you to come back. No notifications that aren't earned.</p>
+    </div>
+    <div class="value">
+      <div class="value-icon"><Icon name="mdi:shield-lock-outline" /></div>
+      <h3>Your data stays put</h3>
+      <p>On-device by default. No accounts, no tracking, no ads.</p>
+    </div>
+    <div class="value">
+      <div class="value-icon"><Icon name="mdi:heart-outline" /></div>
+      <h3>Crafted, not assembled</h3>
+      <p>Each app does one thing well. Released only when it actually feels right.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: 5rem 6rem;
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 56rem;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.9rem;
+    border-radius: 9999px;
+    background: color-mix(in oklab, var(--accent) 14%, transparent);
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
+  .eyebrow-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 28%, transparent);
+  }
+
+  .hero-title {
+    margin: 1.25rem 0 1.25rem;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 1.05;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+  }
+
+  .hero-lede {
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    color: var(--fg-muted);
+    line-height: 1.6;
+    max-width: 42rem;
+    margin: 0 0 2rem;
+  }
+
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .hero-cta .btn :global(svg) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .hero-glow {
+    position: absolute;
+    inset: -20% -10% auto auto;
+    width: 60vw;
+    height: 60vw;
+    max-width: 700px;
+    max-height: 700px;
+    background: radial-gradient(circle at center,
+      color-mix(in oklab, var(--color-mango-400) 60%, transparent) 0%,
+      transparent 60%);
+    filter: blur(60px);
+    opacity: 0.7;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  :global(.dark) .hero-glow {
+    opacity: 0.35;
+  }
+
+  .featured {
+    padding-block: 3rem;
+  }
+
+  .section-head {
+    margin-bottom: 2rem;
+  }
+
+  .section-head h2 {
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    margin: 0 0 0.5rem;
+  }
+
+  .section-head p {
+    color: var(--fg-muted);
+    margin: 0;
+  }
+
+  .featured-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .featured-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .featured-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .featured-footer {
+    margin-top: 2rem;
+  }
+
+  .featured-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .featured-link :global(svg) {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.2s ease;
+  }
+
+  .featured-link:hover :global(svg) {
+    transform: translateX(3px);
+  }
+
+  .values {
+    padding-block: 4rem;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .values {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+    }
+  }
+
+  .value-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: color-mix(in oklab, var(--accent) 14%, transparent);
+    color: var(--accent);
+    margin-bottom: 1rem;
+  }
+
+  .value-icon :global(svg) {
+    width: 24px;
+    height: 24px;
+  }
+
+  .value h3 {
+    font-size: 1.2rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .value p {
+    color: var(--fg-muted);
+    margin: 0;
+    line-height: 1.55;
+  }
+</style>
