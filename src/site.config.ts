@@ -7,7 +7,7 @@ export const site = {
   email: 'hello@mango-labs.dev',
   supportEmail: 'support@mango-labs.dev',
   social: {
-    playStoreDeveloper: 'https://play.google.com/store/apps/dev?id=YOUR_DEVELOPER_ID',
+    playStoreDeveloper: 'https://play.google.com/store/apps/dev?id=5711057161575051006',
     github: 'https://github.com/mango-labs',
   },
   nav: [
