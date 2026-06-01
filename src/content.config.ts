@@ -48,6 +48,7 @@ const apps = defineCollection({
       // Support / legal
       supportEmail: z.string().email().optional(),
       privacyPolicyUrl: z.string().optional(),
+      policyUpdatedAt: z.date().optional(),
     }),
 });
 
