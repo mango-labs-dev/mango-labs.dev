@@ -5,6 +5,7 @@ category: Productivity
 status: upcoming
 featured: true
 order: 2
+accentColor: "#b3430a"
 iconGlyph: mdi:notebook-edit-outline
 iconColors:
   from: "#ffbe54"

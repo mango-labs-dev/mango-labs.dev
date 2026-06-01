@@ -8,9 +8,15 @@ const apps = defineCollection({
       name: z.string(),
       tagline: z.string(),
       category: z.string(),
-      status: z.enum(['released', 'beta', 'upcoming']).default('upcoming'),
+      status: z.enum(['released', 'beta', 'internal', 'upcoming']).default('upcoming'),
       featured: z.boolean().default(false),
       order: z.number().default(100),
+
+      // The app's signature accent — used on its detail page and as its
+      // hover tint on home/index grids. Must be legible as a foreground
+      // color on both cream and dark backgrounds. Pick a deep, saturated
+      // hex; the app's icon gradient (iconColors) can be lighter.
+      accentColor: z.string().regex(/^#[0-9a-fA-F]{6}$/, 'expected 6-digit hex'),
 
       // Visual identity
       icon: image().optional(),

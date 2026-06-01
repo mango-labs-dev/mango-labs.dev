@@ -5,6 +5,7 @@ category: Utilities
 status: upcoming
 featured: false
 order: 6
+accentColor: "#1e40af"
 iconGlyph: mdi:phone-cancel-outline
 iconColors:
   from: "#ff9f2a"

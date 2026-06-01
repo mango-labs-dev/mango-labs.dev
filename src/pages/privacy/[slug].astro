@@ -12,7 +12,7 @@ export async function getStaticPaths() {
 }
 
 const { app } = Astro.props;
-const { name, supportEmail, policyUpdatedAt } = app.data;
+const { name, supportEmail, policyUpdatedAt, accentColor } = app.data;
 const contactEmail = supportEmail ?? site.supportEmail;
 
 const TEMPLATE_LAST_REVIEWED = new Date('2026-05-31');
@@ -26,6 +26,7 @@ const lastUpdated = (policyUpdatedAt ?? TEMPLATE_LAST_REVIEWED).toLocaleDateStri
 <BaseLayout
   title={`${name} — Privacy Policy`}
   description={`The privacy policy for the ${name} Android app by Mango Labs.`}
+  accentColor={accentColor}
 >
   <section class="container-page page">
     <a href={`/apps/${app.id}`} class="breadcrumb">← Back to {name}</a>
@@ -106,7 +107,7 @@ const lastUpdated = (policyUpdatedAt ?? TEMPLATE_LAST_REVIEWED).toLocaleDateStri
   }
 
   .breadcrumb:hover {
-    color: var(--accent);
+    color: var(--app-accent);
   }
 
   .page-head h1 {
@@ -158,7 +159,7 @@ const lastUpdated = (policyUpdatedAt ?? TEMPLATE_LAST_REVIEWED).toLocaleDateStri
   }
 
   .prose a {
-    color: var(--accent);
+    color: var(--app-accent);
     text-decoration: underline;
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;

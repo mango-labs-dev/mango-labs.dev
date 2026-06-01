@@ -5,6 +5,7 @@ category: Games
 status: upcoming
 featured: false
 order: 4
+accentColor: "#be123c"
 iconGlyph: mdi:close-thick
 iconColors:
   from: "#ffeec9"

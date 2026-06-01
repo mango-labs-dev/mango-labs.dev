@@ -14,7 +14,7 @@ const app = apps.find((a) => a.id === 'sudoku-zen');
 if (!app) {
   throw new Error('sudoku-zen app entry not found in src/content/apps');
 }
-const { name, supportEmail, policyUpdatedAt } = app.data;
+const { name, supportEmail, policyUpdatedAt, accentColor } = app.data;
 const contactEmail = supportEmail ?? site.supportEmail;
 
 const lastUpdated = (policyUpdatedAt ?? new Date('2026-06-01')).toLocaleDateString('en-GB', {
@@ -27,6 +27,7 @@ const lastUpdated = (policyUpdatedAt ?? new Date('2026-06-01')).toLocaleDateStri
 <BaseLayout
   title={`${name} — Privacy Policy`}
   description={`The privacy policy for the ${name} Android app by Mango Labs.`}
+  accentColor={accentColor}
 >
   <section class="container-page page">
     <a href={`/apps/${app.id}`} class="breadcrumb">← Back to {name}</a>
@@ -126,7 +127,7 @@ const lastUpdated = (policyUpdatedAt ?? new Date('2026-06-01')).toLocaleDateStri
   }
 
   .breadcrumb:hover {
-    color: var(--accent);
+    color: var(--app-accent);
   }
 
   .page-head h1 {
@@ -178,7 +179,7 @@ const lastUpdated = (policyUpdatedAt ?? new Date('2026-06-01')).toLocaleDateStri
   }
 
   .prose a {
-    color: var(--accent);
+    color: var(--app-accent);
     text-decoration: underline;
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;

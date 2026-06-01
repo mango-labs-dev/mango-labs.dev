@@ -5,6 +5,7 @@ category: Utilities
 status: upcoming
 featured: false
 order: 8
+accentColor: "#0e7490"
 iconGlyph: mdi:server-network
 iconColors:
   from: "#ffbe54"

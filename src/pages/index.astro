@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import AppCard from '~/components/AppCard.astro';
-import { site } from '~/site.config';
 
 const apps = await getCollection('apps');
 const featured = apps
@@ -14,35 +13,54 @@ const totalApps = apps.length;
 
 <BaseLayout>
   <section class="hero">
+    <div class="hero-glow hero-glow-a" aria-hidden="true"></div>
+    <div class="hero-glow hero-glow-b" aria-hidden="true"></div>
+
     <div class="container-page hero-inner">
       <span class="eyebrow">
         <span class="eyebrow-dot" aria-hidden="true"></span>
-        New apps in the kitchen
+        A studio of {totalApps} small Android apps
       </span>
+
       <h1 class="hero-title">
-        Small Android apps,<br />
-        <em>thoughtfully</em> built.
+        Apps you'd actually<br />
+        want <em>installed</em>.
       </h1>
+
       <p class="hero-lede">
-        We make calm, useful apps for everyday moments — puzzles to unwind with,
-        utilities that get out of your way, productivity tools that don't try
-        to run your life.
+        Mango Labs makes quiet, useful Android apps —
+        <span class="lede-strong">puzzles to unwind with</span>,
+        <span class="lede-strong">utilities that get out of your way</span>,
+        <span class="lede-strong">tools that don't try to run your life</span>.
       </p>
+
       <div class="hero-cta">
         <a href="/apps" class="btn btn-primary">
-          See all apps
+          See the lineup
           <Icon name="mdi:arrow-right" />
         </a>
-        <a href="/about" class="btn btn-ghost">About Mango Labs</a>
+        <a href="/about" class="btn btn-ghost">About the studio</a>
       </div>
     </div>
-    <div class="hero-glow" aria-hidden="true"></div>
+
+    <div class="hero-marquee" aria-hidden="true">
+      {apps.map((a) => (
+        <span class="marquee-app" style={`color: ${a.data.accentColor};`}>
+          {a.data.name}
+        </span>
+      ))}
+      {apps.map((a) => (
+        <span class="marquee-app" style={`color: ${a.data.accentColor};`}>
+          {a.data.name}
+        </span>
+      ))}
+    </div>
   </section>
 
   <section class="container-page featured">
     <header class="section-head">
-      <h2>In the spotlight</h2>
-      <p>The apps closest to release. More coming through the year.</p>
+      <span class="section-kicker">Featured</span>
+      <h2>In the spotlight.</h2>
     </header>
 
     <div class="featured-grid">
@@ -51,7 +69,7 @@ const totalApps = apps.length;
 
     <div class="featured-footer">
       <a href="/apps" class="featured-link">
-        Browse all {totalApps} apps
+        <span>Browse all {totalApps} apps</span>
         <Icon name="mdi:arrow-right" />
       </a>
     </div>
@@ -80,26 +98,62 @@ const totalApps = apps.length;
   .hero {
     position: relative;
     overflow: hidden;
-    padding-block: 5rem 6rem;
+    padding-block: 6rem 2rem;
   }
 
   .hero-inner {
     position: relative;
     z-index: 1;
-    max-width: 56rem;
+    max-width: 60rem;
   }
+
+  .hero-glow {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-glow-a {
+    inset: -25% -10% auto auto;
+    width: 60vw;
+    height: 60vw;
+    max-width: 720px;
+    max-height: 720px;
+    background: radial-gradient(circle at center,
+      color-mix(in oklab, var(--color-mango-400) 65%, transparent) 0%,
+      transparent 60%);
+    opacity: 0.75;
+  }
+
+  .hero-glow-b {
+    inset: auto auto -20% -15%;
+    width: 45vw;
+    height: 45vw;
+    max-width: 520px;
+    max-height: 520px;
+    background: radial-gradient(circle at center,
+      color-mix(in oklab, #ff6b1a 55%, transparent) 0%,
+      transparent 60%);
+    opacity: 0.4;
+  }
+
+  :global(.dark) .hero-glow-a { opacity: 0.45; }
+  :global(.dark) .hero-glow-b { opacity: 0.25; }
 
   .eyebrow {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.4rem 0.9rem;
+    gap: 0.6rem;
+    padding: 0.45rem 1rem;
     border-radius: 9999px;
-    background: color-mix(in oklab, var(--accent) 14%, transparent);
+    background: color-mix(in oklab, var(--accent) 12%, transparent);
     color: var(--accent);
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     font-weight: 500;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 
   .eyebrow-dot {
@@ -107,13 +161,15 @@ const totalApps = apps.length;
     height: 6px;
     border-radius: 9999px;
     background: var(--accent);
-    box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 28%, transparent);
+    box-shadow: 0 0 0 5px color-mix(in oklab, var(--accent) 28%, transparent);
   }
 
   .hero-title {
-    margin: 1.25rem 0 1.25rem;
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    line-height: 1.05;
+    margin: 1.5rem 0 1.5rem;
+    font-size: clamp(3rem, 8vw, 5.75rem);
+    line-height: 0.98;
+    font-weight: 500;
+    letter-spacing: -0.035em;
   }
 
   .hero-title em {
@@ -123,11 +179,16 @@ const totalApps = apps.length;
   }
 
   .hero-lede {
-    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    font-size: clamp(1.1rem, 1.5vw, 1.35rem);
     color: var(--fg-muted);
-    line-height: 1.6;
-    max-width: 42rem;
-    margin: 0 0 2rem;
+    line-height: 1.55;
+    max-width: 44rem;
+    margin: 0 0 2.25rem;
+  }
+
+  .lede-strong {
+    color: var(--fg);
+    font-weight: 500;
   }
 
   .hero-cta {
@@ -141,42 +202,77 @@ const totalApps = apps.length;
     height: 18px;
   }
 
-  .hero-glow {
-    position: absolute;
-    inset: -20% -10% auto auto;
-    width: 60vw;
-    height: 60vw;
-    max-width: 700px;
-    max-height: 700px;
-    background: radial-gradient(circle at center,
-      color-mix(in oklab, var(--color-mango-400) 60%, transparent) 0%,
-      transparent 60%);
-    filter: blur(60px);
-    opacity: 0.7;
-    pointer-events: none;
-    z-index: 0;
+  /* Endless marquee of app names in their brand colors below the hero.
+     Subtle, decorative — shows the breadth of the catalog at a glance. */
+  .hero-marquee {
+    margin-top: 3.5rem;
+    overflow: hidden;
+    border-block: 1px solid var(--border);
+    padding-block: 1.25rem;
+    mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: 3rem;
+    white-space: nowrap;
+    animation: marquee 40s linear infinite;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
   }
 
-  :global(.dark) .hero-glow {
-    opacity: 0.35;
+  .marquee-app {
+    display: inline-flex;
+    align-items: center;
+    gap: 3rem;
+  }
+
+  .marquee-app::after {
+    content: "✦";
+    color: var(--fg-muted);
+    margin-left: 3rem;
+    font-style: normal;
+    font-size: 0.6em;
+    opacity: 0.5;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-marquee {
+      animation: none;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
   }
 
   .featured {
-    padding-block: 3rem;
+    padding-block: 5rem 3rem;
   }
 
   .section-head {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .section-kicker {
+    display: inline-block;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--fg-muted);
+    margin-bottom: 0.5rem;
   }
 
   .section-head h2 {
-    font-size: clamp(1.75rem, 3vw, 2.25rem);
-    margin: 0 0 0.5rem;
-  }
-
-  .section-head p {
-    color: var(--fg-muted);
+    font-size: clamp(2rem, 4vw, 2.75rem);
     margin: 0;
+    letter-spacing: -0.03em;
   }
 
   .featured-grid {
@@ -198,65 +294,70 @@ const totalApps = apps.length;
   }
 
   .featured-footer {
-    margin-top: 2rem;
+    margin-top: 2.5rem;
   }
 
   .featured-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.6rem;
     color: var(--accent);
     font-weight: 500;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid color-mix(in oklab, var(--accent) 40%, transparent);
+    transition: border-color 0.2s ease, gap 0.2s ease;
+  }
+
+  .featured-link:hover {
+    border-color: var(--accent);
+    gap: 0.85rem;
   }
 
   .featured-link :global(svg) {
     width: 18px;
     height: 18px;
-    transition: transform 0.2s ease;
-  }
-
-  .featured-link:hover :global(svg) {
-    transform: translateX(3px);
   }
 
   .values {
-    padding-block: 4rem;
+    padding-block: 5rem 4rem;
     display: grid;
-    gap: 2rem;
+    gap: 2.5rem;
     grid-template-columns: 1fr;
   }
 
   @media (min-width: 768px) {
     .values {
       grid-template-columns: repeat(3, 1fr);
-      gap: 2.5rem;
+      gap: 3rem;
     }
   }
 
   .value-icon {
     display: inline-grid;
     place-items: center;
-    width: 48px;
-    height: 48px;
+    width: 52px;
+    height: 52px;
     border-radius: 14px;
     background: color-mix(in oklab, var(--accent) 14%, transparent);
     color: var(--accent);
-    margin-bottom: 1rem;
+    margin-bottom: 1.25rem;
   }
 
   .value-icon :global(svg) {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
   }
 
   .value h3 {
-    font-size: 1.2rem;
-    margin: 0 0 0.5rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin: 0 0 0.65rem;
+    letter-spacing: -0.02em;
   }
 
   .value p {
     color: var(--fg-muted);
     margin: 0;
-    line-height: 1.55;
+    line-height: 1.6;
   }
 </style>

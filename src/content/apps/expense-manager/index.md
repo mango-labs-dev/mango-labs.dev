@@ -5,6 +5,7 @@ category: Productivity
 status: upcoming
 featured: false
 order: 5
+accentColor: "#0f766e"
 iconGlyph: mdi:wallet-outline
 iconColors:
   from: "#ffd98e"

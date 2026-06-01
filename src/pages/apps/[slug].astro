@@ -35,12 +35,16 @@ const {
   supportEmail,
   privacyPolicyUrl,
   screenshots,
+  accentColor,
 } = app.data;
 
 const from = iconColors?.from ?? '#ff9f2a';
 const to = iconColors?.to ?? '#b3430a';
 const statusLabel =
-  status === 'released' ? 'Available now' : status === 'beta' ? 'In beta' : 'Coming soon';
+  status === 'released' ? 'Available now' :
+  status === 'beta' ? 'In beta' :
+  status === 'internal' ? 'In internal testing' :
+  'Coming soon';
 const contactEmail = supportEmail ?? site.supportEmail;
 const privacyHref = privacyPolicyUrl ?? `/privacy/${app.id}`;
 
@@ -50,8 +54,9 @@ const related = (await getCollection('apps'))
   .slice(0, 3);
 ---
 
-<BaseLayout title={name} description={tagline}>
+<BaseLayout title={name} description={tagline} accentColor={accentColor}>
   <section class="app-hero">
+    <div class="hero-glow" aria-hidden="true"></div>
     <div class="container-page app-hero-inner">
       <a href="/apps" class="breadcrumb">
         <Icon name="mdi:arrow-left" />
@@ -198,6 +203,32 @@ const related = (await getCollection('apps'))
   .app-hero {
     position: relative;
     padding-block: 3rem 2rem;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    inset: -20% 30% auto -10%;
+    width: 60vw;
+    height: 60vw;
+    max-width: 720px;
+    max-height: 720px;
+    background: radial-gradient(circle at center,
+      color-mix(in oklab, var(--app-accent) 45%, transparent) 0%,
+      transparent 65%);
+    filter: blur(80px);
+    opacity: 0.65;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  :global(.dark) .hero-glow {
+    opacity: 0.35;
+  }
+
+  .container-page {
+    position: relative;
+    z-index: 1;
   }
 
   .breadcrumb {
@@ -215,7 +246,7 @@ const related = (await getCollection('apps'))
   }
 
   .breadcrumb:hover {
-    color: var(--accent);
+    color: var(--app-accent);
   }
 
   .app-hero-card {
@@ -274,8 +305,8 @@ const related = (await getCollection('apps'))
   }
 
   .meta-pill.status {
-    background: color-mix(in oklab, var(--accent) 14%, transparent);
-    color: var(--accent);
+    background: color-mix(in oklab, var(--app-accent) 14%, transparent);
+    color: var(--app-accent);
     border-color: transparent;
   }
 
@@ -351,8 +382,8 @@ const related = (await getCollection('apps'))
     border-radius: 12px;
     display: grid;
     place-items: center;
-    background: color-mix(in oklab, var(--accent) 14%, transparent);
-    color: var(--accent);
+    background: color-mix(in oklab, var(--app-accent) 14%, transparent);
+    color: var(--app-accent);
   }
 
   .feature-icon :global(svg) {
@@ -465,7 +496,7 @@ const related = (await getCollection('apps'))
   }
 
   .support-card a {
-    color: var(--accent);
+    color: var(--app-accent);
     font-weight: 500;
   }
 

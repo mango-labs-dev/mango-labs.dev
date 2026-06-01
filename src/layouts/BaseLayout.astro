@@ -9,6 +9,7 @@ interface Props {
   description?: string;
   ogImage?: string;
   pageClass?: string;
+  accentColor?: string;
 }
 
 const {
@@ -16,11 +17,14 @@ const {
   description = site.description,
   ogImage,
   pageClass,
+  accentColor,
 } = Astro.props;
 
 const pageTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site.tagline}`;
 const canonical = new URL(Astro.url.pathname, site.url).toString();
 const ogUrl = ogImage ? new URL(ogImage, site.url).toString() : undefined;
+
+const bodyStyle = accentColor ? `--app-accent: ${accentColor}; --app-accent-fg: #ffffff;` : undefined;
 ---
 
 <!doctype html>
@@ -53,7 +57,7 @@ const ogUrl = ogImage ? new URL(ogImage, site.url).toString() : undefined;
       })();
     </script>
   </head>
-  <body class={pageClass}>
+  <body class={pageClass} style={bodyStyle}>
     <a class="skip-link" href="#main">Skip to content</a>
     <SiteHeader />
     <main id="main">

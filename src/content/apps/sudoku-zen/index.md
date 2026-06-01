@@ -2,9 +2,10 @@
 name: Sudoku Zen
 tagline: A calm, adaptive Sudoku with a hand-drawn soul.
 category: Games
-status: upcoming
+status: internal
 featured: true
 order: 1
+accentColor: "#3d5836"
 icon: ./icon.webp
 iconGlyph: mdi:grid
 iconColors:
