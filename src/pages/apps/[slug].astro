@@ -472,12 +472,22 @@ const related = (await getCollection('apps'))
     color: var(--fg-muted);
   }
 
+  /* Allow the value column to shrink below its content and wrap long,
+     unbreakable tokens (e.g. the package id) instead of overflowing the
+     card and forcing horizontal scroll on narrow screens. */
+  .tech-details dd {
+    min-width: 0;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
   .tech-details code {
     font-family: ui-monospace, "SF Mono", Menlo, monospace;
     font-size: 0.9rem;
     background: var(--bg);
     padding: 0.1rem 0.4rem;
     border-radius: 6px;
+    overflow-wrap: anywhere;
   }
 
   .support-section {

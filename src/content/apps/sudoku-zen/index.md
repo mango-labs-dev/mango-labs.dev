@@ -24,6 +24,12 @@ features:
   - icon: mdi:lightbulb-on-outline
     title: Smart hints
     body: Hints explain the technique, not just the digit — so you actually learn as you play.
+  - icon: mdi:view-grid-outline
+    title: Pick your grid
+    body: Play classic 9×9, or quick 4×4 and 6×6 grids for a casual, low-pressure session.
+  - icon: mdi:bell-outline
+    title: Gentle reminders
+    body: Optional on-device nudges to play the daily or pick up a paused game — capped, never pushy, and off by default.
 packageId: dev.mangolabs.sudokuzen
 minSdk: 31
 targetSdk: 36
