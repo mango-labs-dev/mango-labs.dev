@@ -38,6 +38,13 @@ const {
   accentColor,
 } = app.data;
 
+// Android marketing version for an API level. The mapping isn't linear
+// (e.g. API 31 is Android 12, not 11), so use an explicit table and fall
+// back to "API n" for anything unmapped.
+const androidVersionName = (api: number): string =>
+  ({ 29: '10', 30: '11', 31: '12', 32: '12L', 33: '13', 34: '14', 35: '15', 36: '16' } as Record<number, string>)[api]
+    ?? `API ${api}`;
+
 const from = iconColors?.from ?? '#ff9f2a';
 const to = iconColors?.to ?? '#b3430a';
 const statusLabel =
@@ -156,13 +163,13 @@ const related = (await getCollection('apps'))
           {minSdk && (
             <>
               <dt>Min Android</dt>
-              <dd>Android {minSdk - 20} (SDK {minSdk})</dd>
+              <dd>Android {androidVersionName(minSdk)} (SDK {minSdk})</dd>
             </>
           )}
           {targetSdk && (
             <>
               <dt>Target Android</dt>
-              <dd>Android {targetSdk - 20} (SDK {targetSdk})</dd>
+              <dd>Android {androidVersionName(targetSdk)} (SDK {targetSdk})</dd>
             </>
           )}
           {techStack.length > 0 && (

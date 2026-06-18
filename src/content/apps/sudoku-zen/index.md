@@ -25,7 +25,7 @@ features:
     title: Smart hints
     body: Hints explain the technique, not just the digit — so you actually learn as you play.
 packageId: dev.mangolabs.sudokuzen
-minSdk: 34
+minSdk: 31
 targetSdk: 36
 techStack:
   - Kotlin
