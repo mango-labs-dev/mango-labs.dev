@@ -33,7 +33,7 @@ techStack:
   - Material 3
   - Room
   - Hilt
-policyUpdatedAt: 2026-06-06
+policyUpdatedAt: 2026-06-18
 ---
 
 Sudoku Zen is a Sudoku game built around two ideas: puzzles should adapt to *you*, and a great puzzle app should feel calm — never demanding.

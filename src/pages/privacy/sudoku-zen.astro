@@ -71,10 +71,26 @@ const lastUpdated = (policyUpdatedAt ?? new Date('2026-06-01')).toLocaleDateStri
 
       <h2>Permissions</h2>
       <p>
-        {name} requests <strong>no Android permissions of any kind</strong>, including
-        INTERNET. The app cannot access the network, your storage outside its own
-        sandbox, your contacts, camera, microphone, location, or any other on-device
-        information.
+        {name} requests two Android permissions, and only to deliver the optional
+        play reminders you can turn on in Settings:
+      </p>
+      <ul>
+        <li>
+          <strong>Notifications</strong> (<code>POST_NOTIFICATIONS</code>, Android 13+)
+          — to show the reminder. Requested only when you enable reminders; you can
+          decline or revoke it at any time.
+        </li>
+        <li>
+          <strong>Run at startup</strong> (<code>RECEIVE_BOOT_COMPLETED</code>) — so a
+          reminder you've scheduled still fires after your device restarts.
+        </li>
+      </ul>
+      <p>
+        Reminders are scheduled and shown entirely on your device; the suggested
+        reminder time is based on when you usually play, computed locally and never
+        sent anywhere. {name} still has <strong>no internet or network access</strong>,
+        no <code>INTERNET</code> permission, and cannot reach your storage outside its
+        own sandbox, your contacts, camera, microphone, or location.
       </p>
 
       <h2>Children's privacy</h2>
