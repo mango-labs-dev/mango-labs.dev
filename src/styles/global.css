@@ -1,81 +1,71 @@
 @import "tailwindcss";
-@import "@fontsource-variable/inter";
-@import "@fontsource/fraunces/400.css";
-@import "@fontsource/fraunces/500.css";
-@import "@fontsource/fraunces/600.css";
-@import "@fontsource/fraunces/400-italic.css";
-@import "@fontsource/fraunces/500-italic.css";
+@import "@fontsource-variable/hanken-grotesk";
+@import "@fontsource-variable/bricolage-grotesque";
+@import "@fontsource/space-mono/400.css";
+@import "@fontsource/space-mono/700.css";
 
 @theme {
-  /* Typography */
-  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  /* Typography — see brand kit. Display = Bricolage Grotesque, UI/body =
+     Hanken Grotesk, technical/labels = Space Mono. Self-hosted via Fontsource. */
+  --font-sans: "Hanken Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Mango palette — used for studio chrome only.
-     Per-app accents are set via --app-accent (see :root below). */
-  --color-mango-50:  #fff8ec;
-  --color-mango-100: #ffeec9;
-  --color-mango-200: #ffd98e;
-  --color-mango-300: #ffbe54;
-  --color-mango-400: #ff9f2a;
-  --color-mango-500: #f57d10;
-  --color-mango-600: #d95e07;
-  --color-mango-700: #b3430a;
-  --color-mango-800: #913510;
-  --color-mango-900: #762c11;
-  --color-mango-950: #441405;
-
-  /* Warm neutral grays (amber-biased) */
-  --color-bark-50:  #faf7f2;
-  --color-bark-100: #f3ede2;
-  --color-bark-200: #e6dac5;
-  --color-bark-300: #d2bf9f;
-  --color-bark-400: #b59c75;
-  --color-bark-500: #957c58;
-  --color-bark-600: #786347;
-  --color-bark-700: #5d4d39;
-  --color-bark-800: #3f3528;
-  --color-bark-900: #251f17;
-  --color-bark-950: #14110c;
+  /* Mango Labs brand palette (brand/README.md). */
+  --color-leaf: #3da35d;       /* primary green — buttons, accents */
+  --color-leaf-deep: #2f8049;  /* leaf shading / hover */
+  --color-leaf-bright: #54b873;/* leaf on dark surfaces */
+  --color-mango: #f08a24;      /* secondary — highlights */
+  --color-mango-deep: #e07a1e; /* shading */
+  --color-ink: #23331c;        /* text, outlines (2px ink borders) */
+  --color-paper: #fff7e8;      /* page background */
+  --color-cream: #fbead3;      /* card / icon-bg tint */
 }
 
 @layer base {
   :root {
     color-scheme: light dark;
 
-    --bg: var(--color-bark-50);
+    --bg: var(--color-paper);
     --bg-elevated: #ffffff;
-    --fg: var(--color-bark-900);
-    --fg-muted: var(--color-bark-600);
-    --border: var(--color-bark-200);
+    --fg: var(--color-ink);
+    --fg-muted: color-mix(in oklab, var(--color-ink) 60%, var(--color-paper));
+    --border: color-mix(in oklab, var(--color-ink) 16%, var(--color-paper));
+    --tint: var(--color-cream);
 
-    /* Studio accent. Header brand, footer hover, "Mango Labs" wordmark. */
-    --accent: var(--color-mango-600);
-    --accent-fg: #ffffff;
-    --accent-hover: var(--color-mango-700);
+    /* Pulp outline colour — the 2px ink borders and hard offset shadows. */
+    --ink: var(--color-ink);
+
+    /* Studio accent. Header brand, footer hover, primary buttons. */
+    --accent: var(--color-leaf);
+    --accent-fg: var(--color-paper);
+    --accent-hover: var(--color-leaf-deep);
+    --secondary: var(--color-mango);
 
     /* Page accent — set inline on app/privacy detail pages.
-       Defaults to studio mango on every other page. */
+       Defaults to studio leaf on every other page. */
     --app-accent: var(--accent);
     --app-accent-fg: var(--accent-fg);
   }
 
   :root.dark {
-    --bg: var(--color-bark-950);
-    --bg-elevated: var(--color-bark-900);
-    --fg: var(--color-bark-50);
-    --fg-muted: var(--color-bark-300);
-    --border: var(--color-bark-800);
-    --accent: var(--color-mango-400);
-    --accent-fg: var(--color-bark-950);
-    --accent-hover: var(--color-mango-300);
+    --bg: var(--color-ink);
+    --bg-elevated: #2c3f24;
+    --fg: var(--color-paper);
+    --fg-muted: color-mix(in oklab, var(--color-paper) 65%, var(--color-ink));
+    --border: color-mix(in oklab, var(--color-paper) 22%, var(--color-ink));
+    --tint: #2c3f24;
+    --ink: var(--color-paper);
+    --accent: var(--color-leaf-bright);
+    --accent-fg: var(--color-ink);
+    --accent-hover: var(--color-leaf);
+    --secondary: var(--color-mango);
   }
 
   html {
     background: var(--bg);
     color: var(--fg);
     font-family: var(--font-sans);
-    font-feature-settings: "cv11", "ss01";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -95,9 +85,13 @@
 
   h1, h2, h3 {
     font-family: var(--font-display);
-    font-weight: 500;
-    letter-spacing: -0.025em;
+    font-weight: 800;
+    letter-spacing: -0.02em;
     line-height: 1.05;
+  }
+
+  code, kbd, samp, pre {
+    font-family: var(--font-mono);
   }
 
   a {
@@ -123,53 +117,53 @@
     .container-page { padding-inline: 2rem; }
   }
 
+  /* --- Pulp buttons: 2px ink border + hard offset shadow --- */
   .btn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.85rem 1.4rem;
+    padding: 0.8rem 1.4rem;
     border-radius: 9999px;
-    font-weight: 500;
+    border: 2px solid var(--ink);
+    font-weight: 700;
     font-size: 0.95rem;
-    transition: transform 0.15s ease, background-color 0.15s ease, box-shadow 0.2s ease;
     line-height: 1;
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease;
+  }
+
+  .btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+
+  .btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--ink);
   }
 
   .btn-primary {
     background: var(--app-accent);
     color: var(--app-accent-fg);
-    box-shadow: 0 6px 20px -10px color-mix(in oklab, var(--app-accent) 70%, transparent);
-  }
-
-  .btn-primary:hover {
-    background: color-mix(in oklab, var(--app-accent) 88%, black);
-    transform: translateY(-1px);
-    box-shadow: 0 10px 28px -10px color-mix(in oklab, var(--app-accent) 80%, transparent);
   }
 
   .btn-ghost {
-    background: transparent;
-    color: var(--fg);
-    border: 1px solid var(--border);
-  }
-
-  .btn-ghost:hover {
     background: var(--bg-elevated);
-    border-color: var(--fg-muted);
+    color: var(--fg);
   }
 
+  /* --- Pulp cards: 2px ink border, hard shadow lifts on hover --- */
   .card {
     background: var(--bg-elevated);
-    border: 1px solid var(--border);
+    border: 2px solid var(--ink);
     border-radius: 1.25rem;
     overflow: hidden;
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 3px 3px 0 var(--ink);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
   .card:hover {
-    transform: translateY(-3px);
-    border-color: color-mix(in oklab, var(--card-accent, var(--app-accent)) 60%, var(--border));
-    box-shadow:
-      0 14px 36px -16px color-mix(in oklab, var(--card-accent, var(--app-accent)) 50%, transparent);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--ink);
   }
 }

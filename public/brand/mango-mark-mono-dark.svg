@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 64 64" fill="none" role="img" aria-label="Mango Labs mark, one color dark">
+  <path d="M30 13.5c-3.5-5-11-6.5-17-3.5 2.4 4.6 7.2 7.4 14.5 6.6Z" fill="#23331C"></path>
+  <path d="M41 15.6C36.7 13 33 13 29.3 14.6 25.8 16 23 16.5 19 18.4 11.7 21.8 8 29 8 36.6 8 47.4 16.8 55 28 55c4.6 0 6.8-1.2 10-3 8-4.6 12.4-12 11.7-20.4C57 23 50.6 16.6 41 15.6Z" fill="#23331C"></path>
+  <ellipse cx="24" cy="32" rx="5" ry="7.5" transform="rotate(-24 24 32)" fill="#FFF7E8"></ellipse>
+</svg>

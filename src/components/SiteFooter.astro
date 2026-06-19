@@ -8,9 +8,7 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
   <div class="container-page footer-inner">
     <div class="footer-brand">
-      <span class="brand-mark" aria-hidden="true">
-        <Icon name="mdi:fruit-pineapple" />
-      </span>
+      <img src="/brand/mango-mark.svg" alt="" class="brand-mark" width="40" height="40" aria-hidden="true" />
       <div>
         <p class="footer-name">{site.name}</p>
         <p class="footer-tag">{site.tagline}</p>
@@ -66,14 +64,9 @@ const year = new Date().getFullYear();
   }
 
   .brand-mark {
-    display: inline-grid;
-    place-items: center;
     width: 40px;
     height: 40px;
-    border-radius: 12px;
-    background: linear-gradient(135deg, var(--color-mango-400), var(--color-mango-600));
-    color: #fff;
-    font-size: 1.25rem;
+    display: block;
   }
 
   .footer-name {
