@@ -4,7 +4,7 @@ export const site = {
   description:
     'Mango Labs builds simple, useful Android apps with a focus on craft, calm interfaces, and respect for your time and data.',
   url: 'https://mango-labs.dev',
-  email: 'hello@mango-labs.dev',
+  email: 'support@mango-labs.dev',
   supportEmail: 'support@mango-labs.dev',
   social: {
     playStoreDeveloper: 'https://play.google.com/store/apps/dev?id=5711057161575051006',
