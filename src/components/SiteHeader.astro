@@ -10,8 +10,8 @@ const isActive = (href: string) =>
 <header class="site-header">
   <div class="container-page header-inner">
     <a href="/" class="brand" aria-label={`${site.name} home`}>
-      <img src="/brand/logo-horizontal.svg" alt="" class="brand-logo brand-logo-light" aria-hidden="true" />
-      <img src="/brand/logo-horizontal-dark.svg" alt="" class="brand-logo brand-logo-dark" aria-hidden="true" />
+      <img src="/brand/mango-mark.png" alt="" class="brand-mark" width="30" height="30" aria-hidden="true" />
+      <span class="brand-word" aria-hidden="true"><span class="w-mango">Mango</span><span class="w-labs">Labs</span><span class="w-dev">.dev</span></span>
     </a>
 
     <nav class="site-nav" aria-label="Primary">
@@ -54,17 +54,25 @@ const isActive = (href: string) =>
   .brand {
     display: inline-flex;
     align-items: center;
+    gap: 0.5rem;
   }
 
-  .brand-logo {
+  .brand-mark {
+    width: 30px;
     height: 30px;
-    width: auto;
     display: block;
   }
 
-  .brand-logo-dark { display: none; }
-  :global(.dark) .brand-logo-light { display: none; }
-  :global(.dark) .brand-logo-dark { display: block; }
+  .brand-word {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 1.2rem;
+    letter-spacing: -0.02em;
+  }
+
+  .w-mango { color: var(--fg); }
+  .w-labs { color: var(--secondary); }
+  .w-dev { color: var(--fg-muted); }
 
   .site-nav {
     display: flex;
