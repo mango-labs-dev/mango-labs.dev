@@ -23,13 +23,14 @@ features:
   - icon: mdi:cellphone-link
     title: Works with any client
     body: Finder, Explorer, FileZilla, your editor — all of them.
-packageId: dev.mango.labs.ftpserver
+packageId: dev.mangolabs.ftpserver
 minSdk: 34
 targetSdk: 36
 techStack:
   - Kotlin
   - Jetpack Compose
   - Material 3
+policyUpdatedAt: 2026-06-21
 ---
 
 FTP Server turns your phone into a small file server you can talk to from any laptop on the same network — handy for pulling photos off without a cable, dropping documents in for offline reading, or sharing files in a hotel room.
