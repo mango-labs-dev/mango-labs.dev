@@ -41,6 +41,28 @@ const lastUpdated = (policyUpdatedAt ?? new Date('2026-07-04')).toLocaleDateStri
       <p class="updated">Last updated: {lastUpdated}</p>
     </header>
 
+    <div class="short-version card">
+      <p class="short-kicker">THE SHORT VERSION</p>
+      <div class="short-grid">
+        <div class="short-item">
+          <strong>Call screening is on-device.</strong>
+          <span>Your blocked/allowed numbers and contacts never leave your phone.</span>
+        </div>
+        <div class="short-item">
+          <strong>Limited crash data only.</strong>
+          <span>Firebase Crashlytics sends anonymous crash reports — no calls, no contacts.</span>
+        </div>
+        <div class="short-item">
+          <strong>No personal data sold.</strong>
+          <span>Technical logs are never linked to you and never sold to anyone.</span>
+        </div>
+        <div class="short-item">
+          <strong>You're always in control.</strong>
+          <span>Opt out of Firebase in Settings. Clear all data by uninstalling.</span>
+        </div>
+      </div>
+    </div>
+
     <div class="prose">
       <h2>Short version</h2>
       <p>
@@ -198,6 +220,47 @@ const lastUpdated = (policyUpdatedAt ?? new Date('2026-07-04')).toLocaleDateStri
   .page-head h1 {
     font-size: clamp(2rem, 4vw, 3rem);
     margin: 0 0 0.75rem;
+  }
+
+  .short-version {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem 1.75rem;
+    border-radius: 1.25rem;
+  }
+
+  .short-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 1.25rem;
+  }
+
+  .short-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .short-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .short-item strong {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--fg);
+  }
+
+  .short-item span {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+    line-height: 1.55;
   }
 
   .for-app {

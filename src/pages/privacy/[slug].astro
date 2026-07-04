@@ -37,6 +37,28 @@ const lastUpdated = (policyUpdatedAt ?? TEMPLATE_LAST_REVIEWED).toLocaleDateStri
       <p class="updated">Last updated: {lastUpdated}</p>
     </header>
 
+    <div class="short-version card">
+      <p class="short-kicker">THE SHORT VERSION</p>
+      <div class="short-grid">
+        <div class="short-item">
+          <strong>We collect nothing personal.</strong>
+          <span>No account, no login, no name or email to play.</span>
+        </div>
+        <div class="short-item">
+          <strong>Your data stays on-device.</strong>
+          <span>Progress and settings live on your phone — not our servers.</span>
+        </div>
+        <div class="short-item">
+          <strong>No third-party trackers.</strong>
+          <span>No analytics (like GA or Firebase). No fingerprinting.</span>
+        </div>
+        <div class="short-item">
+          <strong>You're always in control.</strong>
+          <span>Clear all app data directly from device settings — gone for good.</span>
+        </div>
+      </div>
+    </div>
+
     <div class="prose">
       <h2>Short version</h2>
       <p>
@@ -128,6 +150,47 @@ const lastUpdated = (policyUpdatedAt ?? TEMPLATE_LAST_REVIEWED).toLocaleDateStri
     font-size: 0.85rem;
     color: var(--fg-muted);
     margin: 0 0 2rem;
+  }
+
+  .short-version {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem 1.75rem;
+    border-radius: 1.25rem;
+  }
+
+  .short-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 1.25rem;
+  }
+
+  .short-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .short-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .short-item strong {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--fg);
+  }
+
+  .short-item span {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+    line-height: 1.55;
   }
 
   .prose {

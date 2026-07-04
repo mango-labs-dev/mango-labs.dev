@@ -22,15 +22,18 @@ const isActive = (href: string) =>
       ))}
     </nav>
 
-    <button
-      class="theme-toggle"
-      type="button"
-      aria-label="Toggle theme"
-      data-theme-toggle
-    >
-      <Icon name="mdi:weather-sunny" class="icon-light" />
-      <Icon name="mdi:weather-night" class="icon-dark" />
-    </button>
+    <div class="header-actions">
+      <a href="/apps" class="btn-nav-cta">Get the apps</a>
+      <button
+        class="theme-toggle"
+        type="button"
+        aria-label="Toggle theme"
+        data-theme-toggle
+      >
+        <Icon name="mdi:weather-sunny" class="icon-light" />
+        <Icon name="mdi:weather-night" class="icon-dark" />
+      </button>
+    </div>
   </div>
 </header>
 
@@ -78,6 +81,43 @@ const isActive = (href: string) =>
     display: flex;
     gap: 0.25rem;
     margin-left: auto;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .btn-nav-cta {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.5rem 1.1rem;
+    border-radius: 9999px;
+    border: 2px solid var(--ink);
+    background: var(--accent);
+    color: var(--accent-fg);
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1;
+    box-shadow: 2px 2px 0 var(--ink);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    white-space: nowrap;
+  }
+
+  .btn-nav-cta:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--ink);
+  }
+
+  .btn-nav-cta:active {
+    transform: translate(1px, 1px);
+    box-shadow: 0 0 0 var(--ink);
+  }
+
+  @media (max-width: 639px) {
+    .btn-nav-cta { display: none; }
   }
 
   .nav-link {
