@@ -17,6 +17,7 @@ const iconSize = variant === 'compact' ? 52 : 64;
 const statusLabel =
   status === 'released' ? null :
   status === 'beta' ? 'Beta' :
+  status === 'closed' ? 'Closed testing' :
   status === 'internal' ? 'Internal testing' :
   'Coming soon';
 ---

@@ -2,7 +2,7 @@
 name: Call Guard
 tagline: Quiet your phone. Keep the calls that matter.
 category: Utilities
-status: upcoming
+status: closed
 featured: false
 order: 6
 accentColor: "#1e40af"
@@ -23,13 +23,15 @@ features:
   - icon: mdi:cellphone-lock
     title: Works offline
     body: No cloud lookups. Filtering happens on your device.
-packageId: dev.mango.labs.callguard
-minSdk: 34
+packageId: dev.mangolabs.callguard
+minSdk: 31
 targetSdk: 36
 techStack:
   - Kotlin
   - Jetpack Compose
   - Material 3
+supportEmail: support@mango-labs.dev
+policyUpdatedAt: 2026-07-04
 ---
 
 Call Guard reduces the daily noise of spam, robocalls, and scams without forcing you to upload your contact list to a server.

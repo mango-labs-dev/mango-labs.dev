@@ -50,6 +50,7 @@ const to = iconColors?.to ?? '#b3430a';
 const statusLabel =
   status === 'released' ? 'Available now' :
   status === 'beta' ? 'In beta' :
+  status === 'closed' ? 'In closed testing' :
   status === 'internal' ? 'In internal testing' :
   'Coming soon';
 const contactEmail = supportEmail ?? site.supportEmail;

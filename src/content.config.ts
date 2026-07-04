@@ -8,7 +8,7 @@ const apps = defineCollection({
       name: z.string(),
       tagline: z.string(),
       category: z.string(),
-      status: z.enum(['released', 'beta', 'internal', 'upcoming']).default('upcoming'),
+      status: z.enum(['released', 'beta', 'closed', 'internal', 'upcoming']).default('upcoming'),
       featured: z.boolean().default(false),
       order: z.number().default(100),
 

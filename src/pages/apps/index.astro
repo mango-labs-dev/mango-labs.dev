@@ -20,6 +20,12 @@ const groups = [
     apps: sorted.filter((a) => a.data.status === 'beta'),
   },
   {
+    key: 'closed',
+    title: 'In closed testing',
+    note: 'Invite-only builds on a closed track while we gather feedback. Open release follows once it settles.',
+    apps: sorted.filter((a) => a.data.status === 'closed'),
+  },
+  {
     key: 'internal',
     title: 'In internal testing',
     note: 'Closed builds going out to a small group. Public release follows once the feedback settles.',

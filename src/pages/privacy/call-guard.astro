@@ -1,0 +1,252 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '~/layouts/BaseLayout.astro';
+import { site } from '~/site.config';
+
+// Static override for Call Guard's privacy policy. Unlike the generic
+// "no data, no network" template in `[slug].astro`, Call Guard reads the
+// incoming caller number and (optionally) your contacts to screen calls,
+// and it ships Firebase Analytics + Crashlytics — so it does send limited
+// technical data off-device. This bespoke page discloses the call-screening
+// role, the phone/contacts/notification permissions, and the Firebase SDKs.
+// All call screening happens on-device; numbers and contacts are never sent
+// to Mango Labs. Astro routes static files ahead of dynamic ones, so only
+// Call Guard gets this page.
+const apps = await getCollection('apps');
+const app = apps.find((a) => a.id === 'call-guard');
+if (!app) {
+  throw new Error('call-guard app entry not found in src/content/apps');
+}
+const { name, supportEmail, policyUpdatedAt, accentColor } = app.data;
+const contactEmail = supportEmail ?? site.supportEmail;
+
+const lastUpdated = (policyUpdatedAt ?? new Date('2026-07-04')).toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<BaseLayout
+  title={`${name} — Privacy Policy`}
+  description={`The privacy policy for the ${name} Android app by Mango Labs.`}
+  accentColor={accentColor}
+>
+  <section class="container-page page">
+    <a href={`/apps/${app.id}`} class="breadcrumb">← Back to {name}</a>
+
+    <header class="page-head">
+      <h1>Privacy Policy</h1>
+      <p class="for-app">For the <strong>{name}</strong> Android app by Mango Labs.</p>
+      <p class="updated">Last updated: {lastUpdated}</p>
+    </header>
+
+    <div class="prose">
+      <h2>Short version</h2>
+      <p>
+        <strong>{name}</strong> screens your incoming calls <strong>on your device</strong>
+        to filter spam, robocalls, and unknown numbers. The numbers you block, the
+        numbers you allow, your contacts, and the decision to let a call ring or not
+        are all handled locally — they are <strong>never uploaded to, routed through,
+        or stored on Mango Labs servers</strong>. We have no account system and no way
+        to see who calls you. The app shows no ads, but it does use Google's Firebase
+        tools, which collect limited technical data as described below.
+      </p>
+
+      <h2>How Call Guard screens your calls</h2>
+      <ul>
+        <li>
+          {name} uses Android's <strong>call-screening role</strong>. When a call comes
+          in, Android hands the number to the app so it can decide whether to let the
+          call through or decline it — <strong>before your phone rings</strong>.
+        </li>
+        <li>
+          That decision is made <strong>entirely on your device</strong> by comparing the
+          number against the block and allow lists you create and, if you turn the option
+          on, whether the number is in your contacts. The number, your contacts, and the
+          result are <strong>never sent to Mango Labs or any third party</strong>. There are
+          no cloud lookups.
+        </li>
+        <li>
+          {name} keeps a <strong>local history</strong> of the calls it screened — what was
+          blocked, why, and when — stored only on your device, so you can review it and
+          allow a number in one tap.
+        </li>
+      </ul>
+
+      <h2>Permissions</h2>
+      <p>
+        {name} requests only the permissions it needs to screen calls. Each is used only
+        for the feature it enables, and never to send your data off your device:
+      </p>
+      <ul>
+        <li>
+          <strong>Call screening &amp; phone state</strong> (the
+          <code>ROLE_CALL_SCREENING</code> role, <code>READ_PHONE_STATE</code>,
+          <code>BIND_SCREENING_SERVICE</code>) — so the app can see the incoming
+          number and decline calls you have chosen to block. {name} deliberately does
+          <strong>not</strong> request the call-log permission.
+        </li>
+        <li>
+          <strong>Contacts</strong> (<code>READ_CONTACTS</code>) — optional, used only if
+          you turn on contact-based filtering (letting people you know ring through). Your
+          contacts are read <strong>on your device</strong> to check a caller and are never
+          uploaded. If you leave this off, {name} never touches your contacts.
+        </li>
+        <li>
+          <strong>Notifications</strong> (<code>POST_NOTIFICATIONS</code>, Android 13+) — to
+          alert you about an unknown caller and to show the app's status. You can decline or
+          revoke it at any time.
+        </li>
+      </ul>
+
+      <h2>Analytics and diagnostics</h2>
+      <p>
+        To keep the app reliable and understand how it is used, {name} includes the
+        following Google Firebase services, which collect limited data on their own terms:
+      </p>
+      <ul>
+        <li>
+          <strong>Firebase Analytics</strong> — collects anonymous, aggregated usage
+          statistics (such as app opens and which features are used). This information is
+          <strong>not linked to you as an individual</strong>: {name} has no accounts and
+          sends no name, email, or user identifier, so the statistics cannot be tied back
+          to a specific person. It also does <strong>not</strong> receive the phone numbers
+          you block or your contacts.
+        </li>
+        <li>
+          <strong>Firebase Crashlytics</strong> — collects crash reports and diagnostic
+          data when the app crashes, so we can fix bugs. These reports do
+          <strong>not</strong> include the numbers you block, your contacts, or your call
+          history.
+        </li>
+      </ul>
+      <p>
+        This data is processed by Google under its
+        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener"
+          >privacy policy</a>. We do not sell your data, and we never combine this technical
+        data with the numbers you screen — call screening and these services are entirely
+        separate.
+      </p>
+
+      <h2>Data stored on your device</h2>
+      <p>
+        Your block list, allow list, screened-call history, and settings are stored locally
+        on your device using Android's standard local storage. None of this leaves your
+        device. You can export a copy yourself from the app (as JSON or CSV); a file you
+        export is shared only where you choose to send it.
+      </p>
+      <p>
+        {name} explicitly opts out of Android's auto-backup
+        (<code>android:allowBackup="false"</code> in the app manifest), so your lists are
+        never uploaded to Google Drive on your behalf. Uninstalling the app removes its
+        local data.
+      </p>
+
+      <h2>Children's privacy</h2>
+      <p>
+        {name} is a general-purpose utility intended for users aged 13 and over and is not
+        directed at children. It collects no personal information beyond the limited
+        technical analytics described above.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        Mango Labs does not hold an account or a profile for you — who calls you never
+        reaches us, so there is nothing on our side to export or delete. The lists and
+        history inside the app are under your control: edit them in the app, or clear the
+        app's storage from Android Settings or uninstall to remove everything. For the
+        analytics and crash data processed by Google, you can exercise your rights under the
+        EU General Data Protection Regulation (GDPR), the California Consumer Privacy Act
+        (CCPA), and India's Digital Personal Data Protection Act 2023 (DPDP) through your
+        device's Google settings and Google's own privacy controls, or contact us and we'll
+        help where we can.
+      </p>
+
+      <h2>Changes to this policy</h2>
+      <p>
+        If we change how {name} handles data — for example, if a future feature adds optional
+        cloud sync or removes analytics — this policy will be updated with a new
+        "Last updated" date and the change will be noted in the app's release notes.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about privacy in {name}?
+        Email <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page {
+    padding-block: 3rem 4rem;
+  }
+
+  .breadcrumb {
+    display: inline-block;
+    color: var(--fg-muted);
+    font-size: 0.9rem;
+    margin-bottom: 2rem;
+  }
+
+  .breadcrumb:hover {
+    color: var(--app-accent);
+  }
+
+  .page-head h1 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    margin: 0 0 0.75rem;
+  }
+
+  .for-app {
+    font-size: 1.05rem;
+    color: var(--fg-muted);
+    margin: 0 0 0.25rem;
+  }
+
+  .for-app strong {
+    color: var(--fg);
+  }
+
+  .updated {
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+    margin: 0 0 2rem;
+  }
+
+  .prose {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .prose h2 {
+    font-size: 1.25rem;
+    margin: 2.5rem 0 0.75rem;
+  }
+
+  .prose p,
+  .prose ul {
+    margin: 0 0 1.25rem;
+  }
+
+  .prose ul {
+    padding-left: 1.5rem;
+  }
+
+  .prose li {
+    margin-bottom: 0.4rem;
+  }
+
+  .prose strong {
+    color: var(--fg);
+  }
+
+  .prose a {
+    color: var(--app-accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+</style>
