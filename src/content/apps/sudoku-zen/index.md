@@ -6,7 +6,7 @@ status: internal
 featured: true
 order: 1
 accentColor: "#3d5836"
-icon: ./icon.webp
+icon: ./icon.png
 iconGlyph: mdi:grid
 iconColors:
   from: "#2e3e27"
