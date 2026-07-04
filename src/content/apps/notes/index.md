@@ -6,6 +6,7 @@ status: upcoming
 featured: true
 order: 2
 accentColor: "#b3430a"
+icon: ./icon.png
 iconGlyph: mdi:notebook-edit-outline
 iconColors:
   from: "#ffbe54"

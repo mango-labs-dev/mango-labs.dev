@@ -6,6 +6,7 @@ status: upcoming
 featured: true
 order: 3
 accentColor: "#4338ca"
+icon: ./icon.png
 iconGlyph: mdi:numeric
 iconColors:
   from: "#ffd98e"

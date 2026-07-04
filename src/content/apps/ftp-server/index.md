@@ -6,6 +6,7 @@ status: upcoming
 featured: false
 order: 8
 accentColor: "#0e7490"
+icon: ./icon.png
 iconGlyph: mdi:server-network
 iconColors:
   from: "#ffbe54"

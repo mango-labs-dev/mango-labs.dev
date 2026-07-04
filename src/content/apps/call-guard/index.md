@@ -6,6 +6,7 @@ status: closed
 featured: false
 order: 6
 accentColor: "#1e40af"
+icon: ./icon.png
 iconGlyph: mdi:phone-cancel-outline
 iconColors:
   from: "#ff9f2a"
