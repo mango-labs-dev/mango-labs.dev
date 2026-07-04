@@ -1,327 +1,138 @@
 ---
 import { getCollection } from 'astro:content';
-import { Icon } from 'astro-icon/components';
-import { Image } from 'astro:assets';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import AppCard from '~/components/AppCard.astro';
 
 const apps = await getCollection('apps');
 const sorted = apps.sort((a, b) => a.data.order - b.data.order);
 
-const featured = sorted.find((a) => a.data.featured);
-const categories = ['All', ...new Set(sorted.map((a) => a.data.category))];
+const testing = sorted.filter((a) =>
+  ['released', 'beta', 'closed', 'internal'].includes(a.data.status)
+);
+const upcoming = sorted.filter((a) => a.data.status === 'upcoming');
 ---
 
 <BaseLayout
   title="Apps"
   description="Every app Mango Labs has shipped — and the ones we're working on next."
 >
-  <section class="container-page page-head">
-    <p class="kicker">THE LINEUP</p>
-    <h1>Our apps.</h1>
-    <p>
-      A small, growing collection. Some are shipping; some are warming up
-      in the kitchen.
+  <section class="hero">
+    <span class="eyebrow">The lineup</span>
+    <h1 class="headline">Our apps.</h1>
+    <p class="hero-sub">
+      A small, growing collection. Some are shipping; some are warming up backstage.
+      Each one started because we wanted to use it ourselves.
     </p>
   </section>
 
-  {featured && (
-    <section class="container-page featured-banner-wrap">
-      <a
-        href={`/apps/${featured.id}`}
-        class="featured-banner"
-        style={`--feat-accent: ${featured.data.accentColor};`}
-      >
-        <div class="feat-icon">
-          {featured.data.icon ? (
-            <Image src={featured.data.icon} alt={`${featured.data.name} icon`} width={128} height={128} />
-          ) : (
-            featured.data.iconGlyph && <Icon name={featured.data.iconGlyph} />
-          )}
-        </div>
-        <div class="feat-body">
-          <div class="feat-meta">
-            <span class="feat-category">{featured.data.category}</span>
-            <span class="feat-status">{
-              featured.data.status === 'released' ? 'Available' :
-              featured.data.status === 'beta' ? 'Beta' :
-              featured.data.status === 'internal' ? 'Internal testing' :
-              'Coming soon'
-            }</span>
-          </div>
-          <p class="feat-name">{featured.data.name}</p>
-          <p class="feat-tagline">{featured.data.tagline}</p>
-        </div>
-        <span class="feat-cta">
-          View app
-          <Icon name="mdi:arrow-right" />
-        </span>
-      </a>
+  {testing.length > 0 && (
+    <section class="apps-section">
+      <div class="section-head">
+        <h2 class="headline">In internal testing</h2>
+        <span class="count">{testing.length}</span>
+      </div>
+      <p class="section-sub">
+        Closed builds going out to a small group. Public release follows once the feedback settles.
+      </p>
+      <div class="apps-grid apps-grid-narrow">
+        {testing.map((app) => <AppCard app={app} />)}
+      </div>
     </section>
   )}
 
-  <section class="container-page page-body">
-    <div class="filter-row" id="filter-bar">
-      {categories.map((cat) => (
-        <button
-          class:list={['filter-chip', { active: cat === 'All' }]}
-          data-filter={cat}
-          type="button"
-        >
-          {cat}
-        </button>
-      ))}
-    </div>
+  {testing.length > 0 && upcoming.length > 0 && (
+    <div class="divider"></div>
+  )}
 
-    <div class="apps-grid" id="apps-grid">
-      {sorted.map((app) => (
-        <div class="app-card-wrap" data-category={app.data.category}>
-          <AppCard app={app} />
-        </div>
-      ))}
-    </div>
-  </section>
+  {upcoming.length > 0 && (
+    <section class="apps-section">
+      <div class="section-head">
+        <h2 class="headline">In the kitchen</h2>
+        <span class="count">{upcoming.length}</span>
+      </div>
+      <p class="section-sub">
+        In development. Pages exist so we can polish copy and design ahead of launch —
+        Play Store links arrive as each one ships.
+      </p>
+      <div class="apps-grid">
+        {upcoming.map((app) => <AppCard app={app} />)}
+      </div>
+    </section>
+  )}
 </BaseLayout>
 
-<script>
-  const bar = document.getElementById('filter-bar');
-  const grid = document.getElementById('apps-grid');
-  if (bar && grid) {
-    bar.addEventListener('click', (e) => {
-      const chip = (e.target as HTMLElement).closest('[data-filter]') as HTMLElement | null;
-      if (!chip) return;
-      const filter = chip.dataset.filter ?? 'All';
-      bar.querySelectorAll('.filter-chip').forEach((c) => c.classList.remove('active'));
-      chip.classList.add('active');
-      grid.querySelectorAll<HTMLElement>('.app-card-wrap').forEach((wrap) => {
-        wrap.style.display =
-          filter === 'All' || wrap.dataset.category === filter ? '' : 'none';
-      });
-    });
-  }
-</script>
-
 <style>
-  .page-head {
-    padding-block: 4.5rem 2rem;
-    max-width: 48rem;
+  .hero {
+    padding: 40px 5% 8px;
+    max-width: 760px;
   }
 
-  .kicker {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.32rem 0.8rem;
-    border-radius: 9999px;
-    border: 2px solid var(--ink);
-    background: var(--tint);
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--fg-muted);
-    box-shadow: 2px 2px 0 var(--ink);
-    margin-bottom: 1.25rem;
-  }
-
-  .page-head h1 {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    margin: 0 0 1rem;
-  }
-
-  .page-head p {
-    font-size: 1.1rem;
-    color: var(--fg-muted);
-    line-height: 1.65;
-    margin: 0;
-  }
-
-  /* ---- Featured banner ---- */
-  .featured-banner-wrap {
-    padding-bottom: 2rem;
-  }
-
-  .featured-banner {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1.5rem 2rem;
-    border-radius: 1.5rem;
-    border: 2px solid var(--ink);
-    background: color-mix(in oklab, var(--feat-accent) 88%, var(--color-ink));
-    box-shadow: 4px 4px 0 var(--ink);
-    color: var(--color-paper);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-
-  .featured-banner:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--ink);
-  }
-
-  .feat-icon {
-    width: 72px;
-    height: 72px;
-    border-radius: 18px;
-    border: 2px solid color-mix(in oklab, var(--color-paper) 30%, transparent);
-    overflow: hidden;
-    display: grid;
-    place-items: center;
-    background: color-mix(in oklab, var(--color-paper) 15%, transparent);
-    flex-shrink: 0;
-    color: var(--color-paper);
-  }
-
-  .feat-icon :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .hero .eyebrow {
     display: block;
+    margin-bottom: 12px;
   }
 
-  .feat-icon :global(svg) {
-    width: 36px;
-    height: 36px;
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 64px);
+    line-height: 1;
+    margin: 10px 0 16px;
+    letter-spacing: -0.01em;
   }
 
-  .feat-meta {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 0.4rem;
-  }
-
-  .feat-category {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: color-mix(in oklab, var(--color-paper) 75%, transparent);
-  }
-
-  .feat-status {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    padding: 0.15rem 0.5rem;
-    border-radius: 9999px;
-    background: var(--secondary);
-    color: var(--color-paper);
-  }
-
-  .feat-name {
-    font-family: var(--font-display);
-    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
-    font-weight: 800;
-    margin: 0 0 0.25rem;
-    color: var(--color-paper);
-    line-height: 1.1;
-  }
-
-  .feat-tagline {
-    font-size: 0.92rem;
-    color: color-mix(in oklab, var(--color-paper) 75%, transparent);
+  .hero-sub {
+    font-size: 17px;
+    color: var(--sub);
+    line-height: 1.6;
+    max-width: 600px;
     margin: 0;
-    line-height: 1.4;
   }
 
-  .feat-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.6rem 1.1rem;
-    border-radius: 9999px;
-    border: 2px solid var(--color-paper);
-    background: transparent;
-    color: var(--color-paper);
-    font-size: 0.85rem;
-    font-weight: 700;
-    white-space: nowrap;
-    flex-shrink: 0;
-    box-shadow: 2px 2px 0 color-mix(in oklab, var(--color-paper) 40%, transparent);
-    transition: background 0.15s ease;
+  .apps-section {
+    padding: 48px 5%;
   }
 
-  .feat-cta :global(svg) {
-    width: 16px;
-    height: 16px;
-  }
-
-  .featured-banner:hover .feat-cta {
-    background: color-mix(in oklab, var(--color-paper) 15%, transparent);
-  }
-
-  @media (max-width: 639px) {
-    .featured-banner {
-      grid-template-columns: auto 1fr;
-      grid-template-rows: 1fr auto;
-    }
-    .feat-cta {
-      grid-column: 1 / -1;
-      justify-self: start;
-    }
-  }
-
-  /* ---- Filter chips ---- */
-  .page-body {
-    padding-bottom: 5rem;
-  }
-
-  .filter-row {
+  .section-head {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
   }
 
-  .filter-chip {
-    padding: 0.45rem 1rem;
-    border-radius: 9999px;
-    border: 2px solid var(--ink);
-    background: var(--bg-elevated);
-    color: var(--fg-muted);
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    box-shadow: 2px 2px 0 var(--ink);
-    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease, color 0.1s ease;
+  .section-head h2 {
+    font-size: 26px;
+    margin: 0;
   }
 
-  .filter-chip:hover {
-    transform: translate(-1px, -1px);
-    box-shadow: 3px 3px 0 var(--ink);
-    color: var(--fg);
+  .count {
+    background: var(--sage);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    border-radius: 99px;
+    padding: 4px 12px;
+    font-family: 'Nunito', sans-serif;
   }
 
-  .filter-chip.active {
-    background: var(--accent);
-    color: var(--accent-fg);
+  .section-sub {
+    color: var(--sub);
+    font-size: 15px;
+    max-width: 600px;
+    margin: 8px 0 28px;
+    line-height: 1.55;
   }
 
-  .filter-chip.active:hover {
-    background: var(--accent-hover);
-  }
-
-  /* ---- Apps grid ---- */
   .apps-grid {
     display: grid;
-    gap: 1rem;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px;
   }
 
-  @media (min-width: 640px) {
-    .apps-grid { grid-template-columns: repeat(2, 1fr); }
+  .apps-grid-narrow {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 320px));
   }
 
-  @media (min-width: 900px) {
-    .apps-grid { grid-template-columns: repeat(3, 1fr); }
-  }
-
-  @media (min-width: 1200px) {
-    .apps-grid { grid-template-columns: repeat(4, 1fr); }
+  .divider {
+    border-top: 1px solid var(--line);
+    margin: 0 5%;
   }
 </style>

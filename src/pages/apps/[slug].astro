@@ -38,9 +38,6 @@ const {
   accentColor,
 } = app.data;
 
-// Android marketing version for an API level. The mapping isn't linear
-// (e.g. API 31 is Android 12, not 11), so use an explicit table and fall
-// back to "API n" for anything unmapped.
 const androidVersionName = (api: number): string =>
   ({ 29: '10', 30: '11', 31: '12', 32: '12L', 33: '13', 34: '14', 35: '15', 36: '16' } as Record<number, string>)[api]
     ?? `API ${api}`;
@@ -64,7 +61,6 @@ const related = (await getCollection('apps'))
 
 <BaseLayout title={name} description={tagline} accentColor={accentColor}>
   <section class="app-hero">
-    <div class="hero-glow" aria-hidden="true"></div>
     <div class="container-page app-hero-inner">
       <a href="/apps" class="breadcrumb">
         <Icon name="mdi:arrow-left" />
@@ -89,7 +85,7 @@ const related = (await getCollection('apps'))
             <span class="meta-pill status">{statusLabel}</span>
             {version && <span class="meta-pill">v{version}</span>}
           </div>
-          <h1>{name}</h1>
+          <h1 class="headline">{name}</h1>
           <p class="app-hero-tagline">{tagline}</p>
 
           <div class="app-hero-cta">
@@ -99,14 +95,8 @@ const related = (await getCollection('apps'))
                 Get it on Google Play
               </a>
             )}
-            <a href="/support" class="btn btn-ghost">
-              <Icon name="mdi:email-outline" />
-              Support
-            </a>
-            <a href={privacyHref} class="btn btn-ghost">
-              <Icon name="mdi:shield-check-outline" />
-              Privacy policy
-            </a>
+            <a href="/support" class="btn btn-ghost">Support</a>
+            <a href={privacyHref} class="btn btn-ghost">Privacy policy</a>
           </div>
         </div>
       </div>
@@ -115,7 +105,7 @@ const related = (await getCollection('apps'))
 
   {screenshots.length > 0 && (
     <section class="container-page section">
-      <h2 class="section-title">Screenshots</h2>
+      <h2 class="section-title headline">Screenshots</h2>
       <div class="screenshots">
         {screenshots.map((src) => (
           <img src={src.src} width={src.width} height={src.height} alt="" loading="lazy" />
@@ -126,7 +116,7 @@ const related = (await getCollection('apps'))
 
   {features.length > 0 && (
     <section class="container-page section">
-      <h2 class="section-title">What you'll love</h2>
+      <h2 class="section-title headline">What you'll love</h2>
       <div class="features">
         {features.map((f) => (
           <div class="feature">
@@ -185,7 +175,7 @@ const related = (await getCollection('apps'))
 
   <section class="container-page section support-section">
     <div class="support-card">
-      <h2>Questions, ideas, bug reports?</h2>
+      <h2 class="headline">Questions, ideas, bug reports?</h2>
       <p>
         We read everything. Drop a line at
         <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
@@ -198,9 +188,9 @@ const related = (await getCollection('apps'))
 
   {related.length > 0 && (
     <section class="container-page section">
-      <h2 class="section-title">More from Mango Labs</h2>
+      <h2 class="section-title headline">More from Mango Labs</h2>
       <div class="related-grid">
-        {related.map((r) => <AppCard app={r} variant="compact" />)}
+        {related.map((r) => <AppCard app={r} />)}
       </div>
     </section>
   )}
@@ -208,43 +198,17 @@ const related = (await getCollection('apps'))
 
 <style>
   .app-hero {
-    position: relative;
     padding-block: 3rem 2rem;
-    overflow: hidden;
-  }
-
-  .hero-glow {
-    position: absolute;
-    inset: -20% 30% auto -10%;
-    width: 60vw;
-    height: 60vw;
-    max-width: 720px;
-    max-height: 720px;
-    background: radial-gradient(circle at center,
-      color-mix(in oklab, var(--app-accent) 45%, transparent) 0%,
-      transparent 65%);
-    filter: blur(80px);
-    opacity: 0.65;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  :global(.dark) .hero-glow {
-    opacity: 0.35;
-  }
-
-  .container-page {
-    position: relative;
-    z-index: 1;
   }
 
   .breadcrumb {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    color: var(--fg-muted);
+    color: var(--sub);
     font-size: 0.9rem;
     margin-bottom: 2rem;
+    transition: color 0.15s ease;
   }
 
   .breadcrumb :global(svg) {
@@ -253,7 +217,7 @@ const related = (await getCollection('apps'))
   }
 
   .breadcrumb:hover {
-    color: var(--app-accent);
+    color: var(--mango-deep);
   }
 
   .app-hero-card {
@@ -278,7 +242,7 @@ const related = (await getCollection('apps'))
     place-items: center;
     color: #fff;
     overflow: hidden;
-    box-shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 16px 48px -20px rgba(0, 0, 0, 0.25);
   }
 
   .app-hero-icon :global(svg) {
@@ -301,18 +265,19 @@ const related = (await getCollection('apps'))
   }
 
   .meta-pill {
-    padding: 0.2rem 0.55rem;
-    border-radius: 9999px;
+    padding: 0.22rem 0.6rem;
+    border-radius: 99px;
     font-size: 0.68rem;
-    font-weight: 500;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    color: var(--fg-muted);
-    letter-spacing: 0.03em;
+    font-weight: 700;
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--sub);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
   }
 
   .meta-pill.status {
-    background: color-mix(in oklab, var(--app-accent) 14%, transparent);
+    background: color-mix(in oklch, var(--app-accent) 15%, transparent);
     color: var(--app-accent);
     border-color: transparent;
   }
@@ -320,11 +285,12 @@ const related = (await getCollection('apps'))
   .app-hero-text h1 {
     font-size: clamp(2.25rem, 5vw, 3.5rem);
     margin: 0 0 0.75rem;
+    letter-spacing: -0.01em;
   }
 
   .app-hero-tagline {
-    font-size: clamp(1.1rem, 1.4vw, 1.35rem);
-    color: var(--fg-muted);
+    font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+    color: var(--sub);
     line-height: 1.5;
     margin: 0 0 1.75rem;
     max-width: 38rem;
@@ -337,8 +303,8 @@ const related = (await getCollection('apps'))
   }
 
   .app-hero-cta .btn :global(svg) {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
   }
 
   .section {
@@ -346,7 +312,7 @@ const related = (await getCollection('apps'))
   }
 
   .section-title {
-    font-size: clamp(1.6rem, 2.5vw, 2rem);
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
     margin: 0 0 1.5rem;
   }
 
@@ -360,7 +326,7 @@ const related = (await getCollection('apps'))
     width: 100%;
     height: auto;
     border-radius: 1rem;
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
   }
 
   .features {
@@ -389,8 +355,9 @@ const related = (await getCollection('apps'))
     border-radius: 12px;
     display: grid;
     place-items: center;
-    background: color-mix(in oklab, var(--app-accent) 14%, transparent);
+    background: color-mix(in oklch, var(--app-accent) 14%, transparent);
     color: var(--app-accent);
+    flex-shrink: 0;
   }
 
   .feature-icon :global(svg) {
@@ -400,65 +367,53 @@ const related = (await getCollection('apps'))
 
   .feature h3 {
     margin: 0 0 0.35rem;
-    font-size: 1.1rem;
-    font-family: var(--font-sans);
-    font-weight: 600;
-    letter-spacing: -0.005em;
+    font-size: 1.05rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
   }
 
   .feature p {
     margin: 0;
-    color: var(--fg-muted);
+    color: var(--sub);
     line-height: 1.55;
+    font-size: 0.95rem;
   }
 
   .prose {
     max-width: 42rem;
     font-size: 1.05rem;
     line-height: 1.7;
-    color: var(--fg);
+    color: var(--ink);
   }
 
-  .prose :global(p) {
-    margin: 0 0 1.25rem;
-  }
-
-  .prose :global(p:last-child) {
-    margin-bottom: 0;
-  }
-
-  .prose :global(strong) {
-    color: var(--fg);
-  }
+  .prose :global(p) { margin: 0 0 1.25rem; }
+  .prose :global(p:last-child) { margin-bottom: 0; }
+  .prose :global(strong) { color: var(--ink); }
 
   .tech-details {
-    border: 1px solid var(--border);
+    border: 1px solid var(--line);
     border-radius: 1rem;
     padding: 1.25rem 1.5rem;
-    background: var(--bg-elevated);
+    background: #fff;
     max-width: 42rem;
   }
 
   .tech-details summary {
     cursor: pointer;
-    font-weight: 500;
-    color: var(--fg-muted);
+    font-weight: 600;
+    color: var(--sub);
     list-style: none;
   }
 
-  .tech-details summary::-webkit-details-marker {
-    display: none;
-  }
+  .tech-details summary::-webkit-details-marker { display: none; }
 
   .tech-details summary::after {
     content: " →";
-    transition: transform 0.2s ease;
     display: inline-block;
+    transition: transform 0.2s ease;
   }
 
-  .tech-details[open] summary::after {
-    transform: rotate(90deg);
-  }
+  .tech-details[open] summary::after { transform: rotate(90deg); }
 
   .tech-details dl {
     margin: 1.25rem 0 0;
@@ -468,13 +423,8 @@ const related = (await getCollection('apps'))
     font-size: 0.95rem;
   }
 
-  .tech-details dt {
-    color: var(--fg-muted);
-  }
+  .tech-details dt { color: var(--sub); }
 
-  /* Allow the value column to shrink below its content and wrap long,
-     unbreakable tokens (e.g. the package id) instead of overflowing the
-     card and forcing horizontal scroll on narrow screens. */
   .tech-details dd {
     min-width: 0;
     margin: 0;
@@ -482,24 +432,22 @@ const related = (await getCollection('apps'))
   }
 
   .tech-details code {
-    font-family: ui-monospace, "SF Mono", Menlo, monospace;
-    font-size: 0.9rem;
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.88rem;
     background: var(--bg);
     padding: 0.1rem 0.4rem;
     border-radius: 6px;
     overflow-wrap: anywhere;
   }
 
-  .support-section {
-    padding-block: 2rem;
-  }
+  .support-section { padding-block: 2rem; }
 
   .support-card {
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    border-radius: 1.5rem;
+    background: #fff;
+    border-radius: 20px;
     padding: 2rem;
     text-align: center;
+    max-width: 42rem;
   }
 
   .support-card h2 {
@@ -509,12 +457,15 @@ const related = (await getCollection('apps'))
 
   .support-card p {
     margin: 0;
-    color: var(--fg-muted);
+    color: var(--sub);
   }
 
   .support-card a {
     color: var(--app-accent);
-    font-weight: 500;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
   }
 
   .privacy-link {
@@ -529,8 +480,6 @@ const related = (await getCollection('apps'))
   }
 
   @media (min-width: 768px) {
-    .related-grid {
-      grid-template-columns: repeat(3, 1fr);
-    }
+    .related-grid { grid-template-columns: repeat(3, 1fr); }
   }
 </style>

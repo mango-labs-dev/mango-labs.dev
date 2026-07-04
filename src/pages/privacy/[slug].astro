@@ -122,49 +122,52 @@ const lastUpdated = (policyUpdatedAt ?? TEMPLATE_LAST_REVIEWED).toLocaleDateStri
 
   .breadcrumb {
     display: inline-block;
-    color: var(--fg-muted);
+    color: var(--sub);
     font-size: 0.9rem;
     margin-bottom: 2rem;
+    transition: color 0.15s ease;
   }
 
   .breadcrumb:hover {
-    color: var(--app-accent);
+    color: var(--mango-deep);
   }
 
   .page-head h1 {
     font-size: clamp(2rem, 4vw, 3rem);
     margin: 0 0 0.75rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
   }
 
   .for-app {
     font-size: 1.05rem;
-    color: var(--fg-muted);
+    color: var(--sub);
     margin: 0 0 0.25rem;
   }
 
   .for-app strong {
-    color: var(--fg);
+    color: var(--ink);
   }
 
   .updated {
     font-size: 0.85rem;
-    color: var(--fg-muted);
+    color: var(--sub);
     margin: 0 0 2rem;
   }
 
   .short-version {
     margin-bottom: 2.5rem;
     padding: 1.5rem 1.75rem;
-    border-radius: 1.25rem;
+    border-radius: 20px;
+    background: #fff;
   }
 
   .short-kicker {
-    font-family: var(--font-mono);
     font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    font-weight: 800;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--accent);
+    color: var(--sage);
     margin: 0 0 1.25rem;
   }
 
@@ -181,15 +184,16 @@ const lastUpdated = (policyUpdatedAt ?? TEMPLATE_LAST_REVIEWED).toLocaleDateStri
   .short-item strong {
     display: block;
     font-size: 0.9rem;
-    font-weight: 700;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
     margin-bottom: 0.25rem;
-    color: var(--fg);
+    color: var(--ink);
   }
 
   .short-item span {
     display: block;
     font-size: 0.85rem;
-    color: var(--fg-muted);
+    color: var(--sub);
     line-height: 1.55;
   }
 
@@ -201,6 +205,8 @@ const lastUpdated = (policyUpdatedAt ?? TEMPLATE_LAST_REVIEWED).toLocaleDateStri
   .prose h2 {
     font-size: 1.25rem;
     margin: 2.5rem 0 0.75rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 500;
   }
 
   .prose p,
@@ -217,11 +223,11 @@ const lastUpdated = (policyUpdatedAt ?? TEMPLATE_LAST_REVIEWED).toLocaleDateStri
   }
 
   .prose strong {
-    color: var(--fg);
+    color: var(--ink);
   }
 
   .prose a {
-    color: var(--app-accent);
+    color: var(--mango-deep);
     text-decoration: underline;
     text-underline-offset: 3px;
     text-decoration-thickness: 1px;

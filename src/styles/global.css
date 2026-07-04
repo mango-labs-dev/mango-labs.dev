@@ -1,169 +1,101 @@
 @import "tailwindcss";
-@import "@fontsource-variable/hanken-grotesk";
-@import "@fontsource-variable/bricolage-grotesque";
-@import "@fontsource/space-mono/400.css";
-@import "@fontsource/space-mono/700.css";
-
-@theme {
-  /* Typography — see brand kit. Display = Bricolage Grotesque, UI/body =
-     Hanken Grotesk, technical/labels = Space Mono. Self-hosted via Fontsource. */
-  --font-sans: "Hanken Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-
-  /* Mango Labs brand palette (brand/README.md). */
-  --color-leaf: #3da35d;       /* primary green — buttons, accents */
-  --color-leaf-deep: #2f8049;  /* leaf shading / hover */
-  --color-leaf-bright: #54b873;/* leaf on dark surfaces */
-  --color-mango: #f08a24;      /* secondary — highlights */
-  --color-mango-deep: #e07a1e; /* shading */
-  --color-ink: #23331c;        /* text, outlines (2px ink borders) */
-  --color-paper: #fff7e8;      /* page background */
-  --color-cream: #fbead3;      /* card / icon-bg tint */
-}
 
 @layer base {
   :root {
-    color-scheme: light dark;
-
-    --bg: var(--color-paper);
-    --bg-elevated: #ffffff;
-    --fg: var(--color-ink);
-    --fg-muted: color-mix(in oklab, var(--color-ink) 60%, var(--color-paper));
-    --border: color-mix(in oklab, var(--color-ink) 16%, var(--color-paper));
-    --tint: var(--color-cream);
-
-    /* Pulp outline colour — the 2px ink borders and hard offset shadows. */
-    --ink: var(--color-ink);
-
-    /* Studio accent. Header brand, footer hover, primary buttons. */
-    --accent: var(--color-leaf);
-    --accent-fg: var(--color-paper);
-    --accent-hover: var(--color-leaf-deep);
-    --secondary: var(--color-mango);
-
-    /* Page accent — set inline on app/privacy detail pages.
-       Defaults to studio leaf on every other page. */
-    --app-accent: var(--accent);
-    --app-accent-fg: var(--accent-fg);
-  }
-
-  :root.dark {
-    --bg: var(--color-ink);
-    --bg-elevated: #2c3f24;
-    --fg: var(--color-paper);
-    --fg-muted: color-mix(in oklab, var(--color-paper) 65%, var(--color-ink));
-    --border: color-mix(in oklab, var(--color-paper) 22%, var(--color-ink));
-    --tint: #2c3f24;
-    --ink: var(--color-paper);
-    --accent: var(--color-leaf-bright);
-    --accent-fg: var(--color-ink);
-    --accent-hover: var(--color-leaf);
-    --secondary: var(--color-mango);
+    --bg: oklch(98% 0.014 80);
+    --ink: oklch(24% 0.02 55);
+    --sub: oklch(46% 0.03 55);
+    --mango: oklch(72% 0.17 55);
+    --mango-deep: oklch(60% 0.18 45);
+    --sage: oklch(65% 0.08 150);
+    --line: oklch(90% 0.015 70);
+    --app-accent: var(--mango);
   }
 
   html {
     background: var(--bg);
-    color: var(--fg);
-    font-family: var(--font-sans);
+    color: var(--ink);
+    font-family: 'Nunito', ui-sans-serif, system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
 
-  /* Subtle paper grain over the whole site. SVG fractal noise, tiled. */
   body {
     min-height: 100vh;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.04'/></svg>");
-    background-attachment: fixed;
-    background-size: 200px 200px;
-  }
-
-  :root.dark body {
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.5 0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.05'/></svg>");
-  }
-
-  h1, h2, h3 {
-    font-family: var(--font-display);
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    line-height: 1.05;
-  }
-
-  code, kbd, samp, pre {
-    font-family: var(--font-mono);
+    margin: 0;
   }
 
   a {
-    color: inherit;
     text-decoration: none;
+    color: inherit;
   }
 
   ::selection {
-    background: var(--app-accent);
-    color: var(--app-accent-fg);
+    background: var(--mango);
+    color: #fff;
   }
 }
 
 @layer components {
+  .headline {
+    font-family: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 500;
+  }
+
+  .eyebrow {
+    font-weight: 800;
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    color: var(--sage);
+    text-transform: uppercase;
+  }
+
+  .btn {
+    font-family: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    border-radius: 99px;
+    padding: 12px 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s ease;
+    text-decoration: none;
+    line-height: 1;
+  }
+
+  .btn-primary {
+    background: var(--mango);
+    color: #fff;
+  }
+
+  .btn-primary:hover {
+    opacity: 0.88;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1.5px solid var(--line);
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--sub);
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
   .container-page {
     width: 100%;
     max-width: 72rem;
     margin-inline: auto;
-    padding-inline: 1.25rem;
-  }
-
-  @media (min-width: 768px) {
-    .container-page { padding-inline: 2rem; }
-  }
-
-  /* --- Pulp buttons: 2px ink border + hard offset shadow --- */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.8rem 1.4rem;
-    border-radius: 9999px;
-    border: 2px solid var(--ink);
-    font-weight: 700;
-    font-size: 0.95rem;
-    line-height: 1;
-    box-shadow: 3px 3px 0 var(--ink);
-    transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.15s ease;
-  }
-
-  .btn:hover {
-    transform: translate(-1px, -1px);
-    box-shadow: 5px 5px 0 var(--ink);
-  }
-
-  .btn:active {
-    transform: translate(1px, 1px);
-    box-shadow: 1px 1px 0 var(--ink);
-  }
-
-  .btn-primary {
-    background: var(--app-accent);
-    color: var(--app-accent-fg);
-  }
-
-  .btn-ghost {
-    background: var(--bg-elevated);
-    color: var(--fg);
-  }
-
-  /* --- Pulp cards: 2px ink border, hard shadow lifts on hover --- */
-  .card {
-    background: var(--bg-elevated);
-    border: 2px solid var(--ink);
-    border-radius: 1.25rem;
-    overflow: hidden;
-    box-shadow: 3px 3px 0 var(--ink);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .card:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--ink);
+    padding-inline: 5%;
   }
 }

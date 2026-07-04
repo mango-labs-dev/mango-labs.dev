@@ -1,397 +1,224 @@
 ---
 import { getCollection } from 'astro:content';
-import { Icon } from 'astro-icon/components';
-import { Image } from 'astro:assets';
 import BaseLayout from '~/layouts/BaseLayout.astro';
 import AppCard from '~/components/AppCard.astro';
 
 const apps = await getCollection('apps');
 const sorted = apps.sort((a, b) => a.data.order - b.data.order);
 const totalApps = apps.length;
-const mosaicApps = sorted.slice(0, 6);
 const lineupApps = sorted.slice(0, 3);
 ---
 
 <BaseLayout>
   <section class="hero">
-    <div class="container-page hero-inner">
-      <div class="hero-text">
-        <p class="eyebrow">
-          <span class="eyebrow-dot" aria-hidden="true"></span>
-          FROM THE LAB
-        </p>
-
-        <h1 class="hero-title">
-          Apps that<br />
-          <span class="highlight">don't</span> shout.
-        </h1>
-
-        <p class="hero-lede">
-          A growing lineup of Android apps built to be useful and quiet.
-          No trackers. No noise. Just the good stuff.
-        </p>
-
-        <div class="hero-cta">
-          <a href="/apps" class="btn btn-primary">Browse apps</a>
-          <a href="/apps#privacy" class="btn btn-ghost">Privacy</a>
-        </div>
-
-        <div class="value-pills">
-          <div class="value-pill">
-            <span class="pill-num">01</span>
-            <strong>Calm by default</strong>
-            <span>No streaks to maintain, no notifications begging for attention. Open, use, close.</span>
-          </div>
-          <div class="value-pill">
-            <span class="pill-num">02</span>
-            <strong>Does less, yes</strong>
-            <span>No device first. We coded as little as possible — and extra falls down, quietly.</span>
-          </div>
-          <div class="value-pill">
-            <span class="pill-num">03</span>
-            <strong>Crafted, not assembled</strong>
-            <span>Jetpack Compose, Material 3, polished until the finer things feel right.</span>
-          </div>
-        </div>
+    <div class="hero-inner">
+      <div class="hero-left">
+        <span class="eyebrow">From the lab</span>
+        <h1 class="hero-title headline">Apps that<br />don't shout.</h1>
       </div>
-
-      <div class="hero-mosaic" aria-hidden="true">
-        {mosaicApps.map((app) => (
-          <div
-            class="mosaic-cell"
-            style={app.data.icon
-              ? undefined
-              : `background: linear-gradient(135deg, ${app.data.iconColors?.from ?? '#ff9f2a'}, ${app.data.iconColors?.to ?? '#b3430a'});`}
-          >
-            {app.data.icon ? (
-              <Image
-                src={app.data.icon}
-                alt=""
-                width={96}
-                height={96}
-                loading="eager"
-              />
-            ) : (
-              app.data.iconGlyph && <Icon name={app.data.iconGlyph} />
-            )}
-          </div>
-        ))}
+      <div class="hero-right">
+        <p class="hero-sub">
+          A small, growing lineup of Android apps built to stay out of your way.
+          No trackers, no noise — just the good stuff.
+        </p>
+        <div class="cta-row">
+          <a href="/apps" class="btn btn-primary">Browse apps</a>
+          <a href="/about" class="btn btn-ghost">Our approach →</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="container-page lineup-section">
-    <header class="lineup-head">
-      <h2>The lineup</h2>
-      <a href="/apps" class="lineup-all">
-        All {totalApps} →
-      </a>
-    </header>
-    <div class="lineup-grid">
+  <section class="tags-section">
+    <div class="tag-chip">
+      <span class="pill-num">01</span>
+      Calm by default
+    </div>
+    <div class="tag-chip">
+      <span class="pill-num">02</span>
+      Does less, on purpose
+    </div>
+    <div class="tag-chip">
+      <span class="pill-num">03</span>
+      Crafted, not assembled
+    </div>
+  </section>
+
+  <section class="lineup">
+    <div class="lineup-head">
+      <h2 class="headline">The lineup</h2>
+      <a href="/apps" class="lineup-all">All {totalApps} →</a>
+    </div>
+    <div class="lineup-strip">
       {lineupApps.map((app) => <AppCard app={app} />)}
     </div>
   </section>
 
-  <section class="privacy-banner">
-    <div class="container-page privacy-inner">
-      <div class="privacy-text">
-        <p class="banner-eyebrow">
-          <span class="eyebrow-dot" aria-hidden="true"></span>
-          PRIVACY — IN PLAIN ENGLISH
-        </p>
-        <h2>Every app has a policy<br />you can actually read.</h2>
-        <p>
-          Plain-language summary up top, full legalese below —
-          exactly what a reviewer or curious user needs.
-        </p>
-      </div>
-      <a href="/apps" class="btn btn-secondary">Read the policies →</a>
-    </div>
+  <section class="privacy-band">
+    <h2 class="headline">Every policy, in plain English.</h2>
+    <p>
+      A plain-language summary up top, full legalese below —
+      exactly what a reviewer or a curious user needs.
+    </p>
   </section>
 </BaseLayout>
 
 <style>
-  /* ---- Hero ---- */
   .hero {
-    padding-block: 5rem 3.5rem;
+    padding: 40px 5% 8px;
   }
 
   .hero-inner {
     display: grid;
-    gap: 3rem;
-    grid-template-columns: 1fr;
-    align-items: center;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 40px;
+    align-items: end;
   }
 
-  @media (min-width: 900px) {
-    .hero-inner {
-      grid-template-columns: 1fr auto;
-      gap: 4rem;
-    }
-  }
-
-  .hero-text {
-    max-width: 36rem;
-  }
-
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    padding: 0.35rem 0.9rem;
-    border-radius: 9999px;
-    border: 2px solid var(--ink);
-    background: var(--secondary);
-    color: var(--color-paper);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    box-shadow: 2px 2px 0 var(--ink);
-    margin-bottom: 1.5rem;
-  }
-
-  .eyebrow-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 9999px;
-    background: var(--color-paper);
-    flex-shrink: 0;
+  .hero-left .eyebrow {
+    display: block;
+    margin-bottom: 12px;
   }
 
   .hero-title {
-    margin: 0 0 1.25rem;
-    font-size: clamp(3.25rem, 9vw, 5.5rem);
-    line-height: 1;
-    font-weight: 800;
-    letter-spacing: -0.03em;
+    font-size: clamp(3rem, 8vw, 76px);
+    line-height: 0.98;
+    margin: 10px 0 0;
+    letter-spacing: -0.01em;
   }
 
-  .highlight {
-    color: var(--secondary);
-  }
-
-  .hero-lede {
-    font-size: clamp(1rem, 1.4vw, 1.2rem);
-    color: var(--fg-muted);
-    line-height: 1.65;
-    margin: 0 0 2rem;
-  }
-
-  .hero-cta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-bottom: 2.5rem;
-  }
-
-  .hero-cta .btn :global(svg) {
-    width: 18px;
-    height: 18px;
-  }
-
-  /* ---- Value pills ---- */
-  .value-pills {
-    display: grid;
-    gap: 0.75rem;
-    grid-template-columns: 1fr;
-  }
-
-  @media (min-width: 640px) {
-    .value-pills { grid-template-columns: repeat(3, 1fr); }
-  }
-
-  .value-pill {
+  .hero-right {
+    border-left: 1px solid var(--line);
+    padding-left: 28px;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    padding: 0.85rem 1rem;
-    border: 2px solid var(--ink);
-    border-radius: 1rem;
-    background: var(--bg-elevated);
-    box-shadow: 2px 2px 0 var(--ink);
+    gap: 20px;
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--sub);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .cta-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* Tag chips */
+  .tags-section {
+    display: flex;
+    gap: 10px;
+    padding: 36px 5%;
+    flex-wrap: wrap;
+  }
+
+  .tag-chip {
+    background: #fff;
+    border-radius: 99px;
+    padding: 10px 18px;
+    font-size: 13.5px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    border: 1px solid var(--line);
+    font-weight: 600;
+    color: var(--ink);
   }
 
   .pill-num {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: 0.06em;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--mango-deep);
   }
 
-  .value-pill strong {
-    display: block;
-    font-size: 0.88rem;
-    font-weight: 700;
-    line-height: 1.3;
-  }
-
-  .value-pill span {
-    display: block;
-    font-size: 0.8rem;
-    color: var(--fg-muted);
-    line-height: 1.5;
-  }
-
-  /* ---- App mosaic (decorative) ---- */
-  .hero-mosaic {
-    display: grid;
-    grid-template-columns: repeat(2, 120px);
-    grid-template-rows: repeat(3, 120px);
-    gap: 0.75rem;
-    flex-shrink: 0;
-  }
-
-  @media (max-width: 899px) {
-    .hero-mosaic { display: none; }
-  }
-
-  .mosaic-cell {
-    width: 120px;
-    height: 120px;
-    border-radius: 1.25rem;
-    border: 2px solid var(--ink);
-    box-shadow: 3px 3px 0 var(--ink);
-    display: grid;
-    place-items: center;
-    color: #fff;
-    overflow: hidden;
-  }
-
-  .mosaic-cell :global(svg) {
-    width: 52px;
-    height: 52px;
-    opacity: 0.9;
-  }
-
-  .mosaic-cell :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  /* ---- The lineup ---- */
-  .lineup-section {
-    padding-block: 4rem 3rem;
+  /* Lineup */
+  .lineup {
+    padding: 16px 0 56px;
   }
 
   .lineup-head {
+    padding: 0 5%;
     display: flex;
-    align-items: baseline;
     justify-content: space-between;
-    margin-bottom: 1.5rem;
+    align-items: baseline;
+    margin-bottom: 20px;
   }
 
   .lineup-head h2 {
-    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-size: 30px;
     margin: 0;
   }
 
   .lineup-all {
-    font-size: 0.9rem;
+    font-size: 14px;
     font-weight: 700;
-    color: var(--accent);
-    border-bottom: 2px solid color-mix(in oklab, var(--accent) 40%, transparent);
-    padding-bottom: 0.1rem;
-    transition: border-color 0.15s ease;
+    color: var(--mango-deep);
+    transition: color 0.15s ease;
   }
 
   .lineup-all:hover {
-    border-color: var(--accent);
+    color: var(--mango);
   }
 
-  .lineup-grid {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: 1fr;
-  }
-
-  @media (min-width: 640px) {
-    .lineup-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  @media (min-width: 1024px) {
-    .lineup-grid { grid-template-columns: repeat(3, 1fr); }
-  }
-
-  /* ---- Privacy banner ---- */
-  .privacy-banner {
-    margin-top: 2rem;
-    background: var(--color-ink);
-    color: var(--color-paper);
-    padding-block: 3.5rem;
-  }
-
-  .privacy-inner {
+  .lineup-strip {
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    gap: 20px;
+    padding: 0 5%;
+    overflow-x: auto;
+    scrollbar-width: none;
   }
 
-  @media (min-width: 768px) {
-    .privacy-inner {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-    }
+  .lineup-strip::-webkit-scrollbar {
+    display: none;
   }
 
-  .banner-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--secondary);
-    margin-bottom: 1rem;
+  .lineup-strip > :global(.app-card) {
+    flex: 0 0 260px;
   }
 
-  .banner-eyebrow .eyebrow-dot {
-    background: var(--secondary);
+  /* Privacy band */
+  .privacy-band {
+    margin: 8px 5% 56px;
+    background: var(--sage);
+    color: #fff;
+    border-radius: 24px;
+    padding: 56px 5%;
   }
 
-  .privacy-text h2 {
-    font-size: clamp(1.6rem, 3vw, 2.25rem);
-    color: var(--color-paper);
-    margin: 0 0 0.75rem;
-    line-height: 1.1;
+  .privacy-band h2 {
+    font-size: clamp(1.6rem, 3vw, 36px);
+    max-width: 640px;
+    margin: 0 0 14px;
+    color: #fff;
   }
 
-  .privacy-text p {
-    font-size: 0.97rem;
-    color: color-mix(in oklab, var(--color-paper) 70%, var(--color-ink));
-    line-height: 1.6;
+  .privacy-band p {
+    max-width: 480px;
     margin: 0;
-    max-width: 38rem;
+    opacity: 0.85;
+    font-size: 15px;
+    line-height: 1.55;
   }
 
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.85rem 1.5rem;
-    border-radius: 9999px;
-    border: 2px solid var(--color-paper);
-    background: var(--secondary);
-    color: var(--color-paper);
-    font-weight: 700;
-    font-size: 0.95rem;
-    line-height: 1;
-    box-shadow: 3px 3px 0 var(--color-paper);
-    transition: transform 0.12s ease, box-shadow 0.12s ease;
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
+  @media (max-width: 820px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+    }
 
-  .btn-secondary:hover {
-    transform: translate(-1px, -1px);
-    box-shadow: 5px 5px 0 var(--color-paper);
-  }
+    .hero-right {
+      border-left: none;
+      padding-left: 0;
+      border-top: 1px solid var(--line);
+      padding-top: 20px;
+    }
 
-  .btn-secondary:active {
-    transform: translate(1px, 1px);
-    box-shadow: 1px 1px 0 var(--color-paper);
+    .hero-title {
+      font-size: clamp(2.5rem, 10vw, 64px);
+    }
   }
 </style>

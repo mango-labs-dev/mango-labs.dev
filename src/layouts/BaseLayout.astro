@@ -24,7 +24,7 @@ const pageTitle = title ? `${title} — ${site.name}` : `${site.name} — ${site
 const canonical = new URL(Astro.url.pathname, site.url).toString();
 const ogUrl = ogImage ? new URL(ogImage, site.url).toString() : undefined;
 
-const bodyStyle = accentColor ? `--app-accent: ${accentColor}; --app-accent-fg: #ffffff;` : undefined;
+const bodyStyle = accentColor ? `--app-accent: ${accentColor};` : undefined;
 ---
 
 <!doctype html>
@@ -48,16 +48,12 @@ const bodyStyle = accentColor ? `--app-accent: ${accentColor}; --app-accent-fg: 
     <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
     <link rel="apple-touch-icon" href="/favicon-180.png" />
 
-    <script is:inline>
-      (function () {
-        try {
-          const stored = localStorage.getItem('theme');
-          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          const theme = stored ?? (prefersDark ? 'dark' : 'light');
-          if (theme === 'dark') document.documentElement.classList.add('dark');
-        } catch (e) {}
-      })();
-    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600&family=Nunito:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body class={pageClass} style={bodyStyle}>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -67,24 +63,13 @@ const bodyStyle = accentColor ? `--app-accent: ${accentColor}; --app-accent-fg: 
     </main>
     <SiteFooter />
 
-    <script>
-      const toggle = document.querySelector('[data-theme-toggle]');
-      toggle?.addEventListener('click', () => {
-        const root = document.documentElement;
-        const next = root.classList.toggle('dark') ? 'dark' : 'light';
-        try {
-          localStorage.setItem('theme', next);
-        } catch (e) {}
-      });
-    </script>
-
     <style>
       .skip-link {
         position: absolute;
         left: -10000px;
         top: 0;
-        background: var(--accent);
-        color: var(--accent-fg);
+        background: var(--mango);
+        color: #fff;
         padding: 0.5rem 1rem;
         border-radius: 6px;
         z-index: 100;

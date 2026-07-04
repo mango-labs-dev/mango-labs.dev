@@ -1,134 +1,107 @@
 ---
-import { Icon } from 'astro-icon/components';
 import { site } from '~/site.config';
 
 const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <div class="container-page footer-inner">
+  <div class="footer-inner">
     <div class="footer-brand">
-      <img src="/brand/mango-mark.png" alt="" class="brand-mark" width="40" height="40" aria-hidden="true" />
-      <div>
-        <p class="footer-name">{site.name}</p>
-        <p class="footer-tag">{site.tagline}</p>
-      </div>
+      <img src="/brand/mango-mark.png" alt="" class="brand-mark" width="26" height="26" aria-hidden="true" />
+      <p class="footer-name">Mango Labs</p>
+      <p class="footer-tag">{site.tagline}</p>
     </div>
 
-    <nav class="footer-links" aria-label="Footer">
-      <a href="/apps">Apps</a>
-      <a href="/about">About</a>
-      <a href="/support">Support</a>
-    </nav>
-
-    <div class="footer-social">
-      <a href={site.social.playStoreDeveloper} aria-label="Mango Labs on Google Play" target="_blank" rel="noopener">
-        <Icon name="simple-icons:googleplay" />
-      </a>
-      <a href={site.social.github} aria-label="Mango Labs on GitHub" target="_blank" rel="noopener">
-        <Icon name="simple-icons:github" />
-      </a>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <span class="col-head">Site</span>
+        <a href="/apps">Apps</a>
+        <a href="/about">About</a>
+        <a href="/support">Support</a>
+      </div>
+      <div class="footer-col">
+        <span class="col-head">Elsewhere</span>
+        <a href={site.social.playStoreDeveloper} target="_blank" rel="noopener">Play Store</a>
+      </div>
     </div>
   </div>
 
-  <div class="container-page footer-meta">
+  <div class="footer-meta">
     <p>&copy; {year} {site.name}. Made with care in India.</p>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    margin-top: 6rem;
-    border-top: 1px solid var(--border);
-    background: var(--bg);
+    margin-top: 4rem;
+    border-top: 1px solid var(--line);
   }
 
   .footer-inner {
-    display: grid;
-    gap: 2rem;
-    padding-block: 3rem 1.5rem;
-    grid-template-columns: 1fr;
-  }
-
-  @media (min-width: 768px) {
-    .footer-inner {
-      grid-template-columns: 2fr 1fr 1fr;
-      align-items: start;
-    }
+    display: flex;
+    justify-content: space-between;
+    padding: 48px 5% 20px;
+    flex-wrap: wrap;
+    gap: 24px;
+    font-size: 13.5px;
+    color: var(--sub);
   }
 
   .footer-brand {
     display: flex;
-    gap: 0.75rem;
-    align-items: center;
+    flex-direction: column;
+    gap: 6px;
   }
 
   .brand-mark {
-    width: 40px;
-    height: 40px;
+    width: 26px;
+    height: 26px;
     display: block;
+    margin-bottom: 2px;
   }
 
   .footer-name {
-    font-family: var(--font-display);
-    font-weight: 500;
-    font-size: 1.1rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink);
     margin: 0;
   }
 
   .footer-tag {
-    font-size: 0.9rem;
-    color: var(--fg-muted);
     margin: 0;
+    color: var(--sub);
   }
 
-  .footer-links {
+  .footer-cols {
+    display: flex;
+    gap: 64px;
+  }
+
+  .footer-col {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    font-size: 0.95rem;
+    gap: 10px;
   }
 
-  .footer-links a {
-    color: var(--fg-muted);
+  .col-head {
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .footer-col a {
+    color: var(--sub);
     transition: color 0.15s ease;
   }
 
-  .footer-links a:hover {
-    color: var(--accent);
-  }
-
-  .footer-social {
-    display: flex;
-    gap: 0.75rem;
-  }
-
-  .footer-social a {
-    display: inline-grid;
-    place-items: center;
-    width: 38px;
-    height: 38px;
-    border-radius: 9999px;
-    border: 1px solid var(--border);
-    color: var(--fg-muted);
-    transition: color 0.15s ease, border-color 0.15s ease;
-  }
-
-  .footer-social a:hover {
-    color: var(--accent);
-    border-color: var(--accent);
-  }
-
-  .footer-social :global(svg) {
-    width: 18px;
-    height: 18px;
+  .footer-col a:hover {
+    color: var(--mango-deep);
   }
 
   .footer-meta {
-    padding-block: 1rem 2rem;
-    font-size: 0.85rem;
-    color: var(--fg-muted);
-    border-top: 1px solid var(--border);
+    padding: 16px 5% 32px;
+    font-size: 12.5px;
+    color: var(--sub);
   }
 
   .footer-meta p {

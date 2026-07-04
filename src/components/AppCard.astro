@@ -1,18 +1,15 @@
 ---
-import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   app: CollectionEntry<'apps'>;
-  variant?: 'default' | 'compact';
 }
 
-const { app, variant = 'default' } = Astro.props;
-const { name, tagline, category, status, icon, iconGlyph, iconColors, accentColor } = app.data;
+const { app } = Astro.props;
+const { name, tagline, category, status, icon, iconColors } = app.data;
 const from = iconColors?.from ?? '#ff9f2a';
 const to = iconColors?.to ?? '#b3430a';
-const iconSize = variant === 'compact' ? 52 : 64;
 
 const statusLabel =
   status === 'released' ? null :
@@ -20,85 +17,49 @@ const statusLabel =
   status === 'closed' ? 'Closed testing' :
   status === 'internal' ? 'Internal testing' :
   'Coming soon';
+
+const tagText = statusLabel ? `${category} · ${statusLabel}` : category;
 ---
 
-<a
-  href={`/apps/${app.id}`}
-  class:list={['app-card', `variant-${variant}`, 'card']}
-  style={`--card-accent: ${accentColor};`}
->
+<a href={`/apps/${app.id}`} class="app-card">
   <div
     class="app-card-icon"
     style={icon ? undefined : `background: linear-gradient(135deg, ${from}, ${to});`}
+    aria-hidden="true"
   >
-    {icon ? (
-      <Image src={icon} alt={`${name} icon`} width={iconSize * 2} height={iconSize * 2} loading="lazy" />
-    ) : (
-      iconGlyph && <Icon name={iconGlyph} />
+    {icon && (
+      <Image src={icon} alt="" width={260} height={150} loading="lazy" />
     )}
   </div>
   <div class="app-card-body">
-    <div class="app-card-meta">
-      <span class="app-card-category">{category}</span>
-      {statusLabel && <span class="app-card-status">{statusLabel}</span>}
-    </div>
-    <h3 class="app-card-name">{name}</h3>
+    <span class="app-card-tag">{tagText}</span>
+    <h4 class="app-card-name">{name}</h4>
     <p class="app-card-tagline">{tagline}</p>
   </div>
-  <span class="app-card-arrow" aria-hidden="true">
-    <Icon name="mdi:arrow-top-right" />
-  </span>
 </a>
 
 <style>
   .app-card {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    gap: 1.25rem;
-    align-items: center;
-    padding: 1.25rem;
-    color: var(--fg);
-    position: relative;
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    color: var(--ink);
+    transition: transform 0.18s ease;
   }
 
-  .variant-default {
-    padding: 1.5rem;
-  }
-
-  /* Thin accent rail on the left that grows on hover. */
-  .app-card::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    height: 32px;
-    width: 3px;
-    transform: translateY(-50%);
-    background: var(--card-accent);
-    border-radius: 0 4px 4px 0;
-    opacity: 0;
-    transition: opacity 0.25s ease, height 0.25s ease;
-  }
-
-  .app-card:hover::before {
-    opacity: 0.85;
-    height: 60%;
+  .app-card:hover {
+    transform: translateY(-2px);
   }
 
   .app-card-icon {
-    width: 64px;
-    height: 64px;
-    border-radius: 18px;
-    display: grid;
-    place-items: center;
-    color: #fff;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
-    box-shadow: 0 10px 28px -14px color-mix(in oklab, var(--card-accent) 60%, transparent);
-  }
-
-  .app-card-icon :global(svg) {
-    width: 32px;
-    height: 32px;
+    flex-shrink: 0;
   }
 
   .app-card-icon :global(img) {
@@ -108,75 +69,34 @@ const statusLabel =
     display: block;
   }
 
-  .variant-compact .app-card-icon {
-    width: 52px;
-    height: 52px;
-    border-radius: 14px;
-  }
-
-  .variant-compact .app-card-icon :global(svg) {
-    width: 26px;
-    height: 26px;
-  }
-
   .app-card-body {
-    min-width: 0;
-  }
-
-  .app-card-meta {
+    padding: 16px;
     display: flex;
-    align-items: center;
-    gap: 0.45rem;
-    font-size: 0.62rem;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--fg-muted);
-    margin-bottom: 0.5rem;
+    flex-direction: column;
+    gap: 5px;
   }
 
-  .app-card-status {
-    padding: 0.12rem 0.45rem;
-    border-radius: 9999px;
-    background: color-mix(in oklab, var(--card-accent) 14%, transparent);
-    color: var(--card-accent);
+  .app-card-tag {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--sage);
     letter-spacing: 0.04em;
-    font-weight: 600;
   }
 
   .app-card-name {
     margin: 0;
-    font-family: var(--font-display);
-    font-size: 1.35rem;
+    font-family: 'Space Grotesk', sans-serif;
     font-weight: 500;
-    letter-spacing: -0.02em;
-    line-height: 1.15;
+    font-size: 16px;
+    color: var(--ink);
+    line-height: 1.3;
   }
 
   .app-card-tagline {
-    margin: 0.4rem 0 0;
-    color: var(--fg-muted);
-    font-size: 0.95rem;
-    line-height: 1.5;
-  }
-
-  .app-card-arrow {
-    display: grid;
-    place-items: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 9999px;
-    color: var(--fg-muted);
-    transition: transform 0.2s ease, color 0.2s ease, background-color 0.2s ease;
-  }
-
-  .app-card-arrow :global(svg) {
-    width: 18px;
-    height: 18px;
-  }
-
-  .app-card:hover .app-card-arrow {
-    color: var(--card-accent);
-    background: color-mix(in oklab, var(--card-accent) 12%, transparent);
-    transform: translate(2px, -2px);
+    margin: 0;
+    font-size: 13px;
+    color: var(--sub);
+    line-height: 1.45;
   }
 </style>
