@@ -39,24 +39,18 @@ const lineupApps = sorted.slice(0, 3);
         <div class="value-pills">
           <div class="value-pill">
             <span class="pill-num">01</span>
-            <div>
-              <strong>Calm by default</strong>
-              <span>No streaks to maintain, no notifications begging for attention. Open, use, close.</span>
-            </div>
+            <strong>Calm by default</strong>
+            <span>No streaks to maintain, no notifications begging for attention. Open, use, close.</span>
           </div>
           <div class="value-pill">
             <span class="pill-num">02</span>
-            <div>
-              <strong>Does less, yes</strong>
-              <span>No device first. We coded as little as possible — and extra falls down, quietly.</span>
-            </div>
+            <strong>Does less, yes</strong>
+            <span>No device first. We coded as little as possible — and extra falls down, quietly.</span>
           </div>
           <div class="value-pill">
             <span class="pill-num">03</span>
-            <div>
-              <strong>Crafted, not assembled</strong>
-              <span>Partly & Compose, Material 3, polished until the finer things feel right.</span>
-            </div>
+            <strong>Crafted, not assembled</strong>
+            <span>Jetpack Compose, Material 3, polished until the finer things feel right.</span>
           </div>
         </div>
       </div>
@@ -197,15 +191,19 @@ const lineupApps = sorted.slice(0, 3);
 
   /* ---- Value pills ---- */
   .value-pills {
-    display: flex;
-    flex-direction: column;
+    display: grid;
     gap: 0.75rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .value-pills { grid-template-columns: repeat(3, 1fr); }
   }
 
   .value-pill {
     display: flex;
-    align-items: flex-start;
-    gap: 0.85rem;
+    flex-direction: column;
+    gap: 0.5rem;
     padding: 0.85rem 1rem;
     border: 2px solid var(--ink);
     border-radius: 1rem;
@@ -215,24 +213,22 @@ const lineupApps = sorted.slice(0, 3);
 
   .pill-num {
     font-family: var(--font-mono);
-    font-size: 0.72rem;
+    font-size: 0.68rem;
     font-weight: 700;
     color: var(--accent);
-    flex-shrink: 0;
-    padding-top: 0.15rem;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
   }
 
   .value-pill strong {
     display: block;
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 700;
-    margin-bottom: 0.2rem;
+    line-height: 1.3;
   }
 
   .value-pill span {
     display: block;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     color: var(--fg-muted);
     line-height: 1.5;
   }

@@ -93,16 +93,11 @@ const related = (await getCollection('apps'))
           <p class="app-hero-tagline">{tagline}</p>
 
           <div class="app-hero-cta">
-            {playStoreUrl ? (
+            {playStoreUrl && (
               <a href={playStoreUrl} class="btn btn-primary" target="_blank" rel="noopener">
                 <Icon name="simple-icons:googleplay" />
                 Get it on Google Play
               </a>
-            ) : (
-              <span class="btn btn-ghost" aria-disabled="true">
-                <Icon name="mdi:clock-outline" />
-                {statusLabel}
-              </span>
             )}
             <a href="/support" class="btn btn-ghost">
               <Icon name="mdi:email-outline" />
