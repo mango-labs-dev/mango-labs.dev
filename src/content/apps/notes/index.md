@@ -4,9 +4,8 @@ tagline: Fast, private notes — nothing more, nothing less.
 category: Productivity
 status: upcoming
 featured: true
-order: 2
+order: 4
 accentColor: "#b3430a"
-icon: ./icon.png
 iconGlyph: mdi:notebook-edit-outline
 iconColors:
   from: "#ffbe54"

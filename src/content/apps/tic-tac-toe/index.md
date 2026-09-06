@@ -6,7 +6,6 @@ status: upcoming
 featured: false
 order: 4
 accentColor: "#be123c"
-icon: ./icon.png
 iconGlyph: mdi:close-thick
 iconColors:
   from: "#ffeec9"

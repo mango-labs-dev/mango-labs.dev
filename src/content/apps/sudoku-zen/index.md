@@ -4,7 +4,7 @@ tagline: A calm, adaptive Sudoku with a hand-drawn soul.
 category: Games
 status: internal
 featured: true
-order: 1
+order: 2
 accentColor: "#3d5836"
 icon: ./icon.png
 iconGlyph: mdi:grid
