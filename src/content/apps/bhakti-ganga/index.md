@@ -2,7 +2,7 @@
 name: Bhakti Ganga
 tagline: Sacred prayers, aartis, and stotras — distraction-free.
 category: Lifestyle
-status: released
+status: internal
 featured: true
 order: 1
 accentColor: "#C25E16"
