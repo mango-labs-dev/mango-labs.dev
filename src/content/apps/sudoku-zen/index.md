@@ -2,9 +2,11 @@
 name: Sudoku Zen
 tagline: A calm, adaptive Sudoku with a hand-drawn soul.
 category: Games
-status: internal
+status: released
 featured: true
 order: 2
+version: "1.0.8"
+playStoreUrl: https://play.google.com/store/apps/details?id=dev.mangolabs.sudokuzen
 accentColor: "#3d5836"
 icon: ./icon.png
 iconGlyph: mdi:grid

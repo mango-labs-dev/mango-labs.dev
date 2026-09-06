@@ -6,8 +6,9 @@ import AppCard from '~/components/AppCard.astro';
 const apps = await getCollection('apps');
 const sorted = apps.sort((a, b) => a.data.order - b.data.order);
 
+const released = sorted.filter((a) => a.data.status === 'released');
 const testing = sorted.filter((a) =>
-  ['released', 'beta', 'closed', 'internal'].includes(a.data.status)
+  ['beta', 'closed', 'internal'].includes(a.data.status)
 );
 const upcoming = sorted.filter((a) => a.data.status === 'upcoming');
 ---
@@ -24,6 +25,25 @@ const upcoming = sorted.filter((a) => a.data.status === 'upcoming');
       Each one started because we wanted to use it ourselves.
     </p>
   </section>
+
+  {released.length > 0 && (
+    <section class="apps-section">
+      <div class="section-head">
+        <h2 class="headline">Shipping</h2>
+        <span class="count">{released.length}</span>
+      </div>
+      <p class="section-sub">
+        Live and available for download. Polished, stable, and ready to use.
+      </p>
+      <div class="apps-grid apps-grid-narrow">
+        {released.map((app) => <AppCard app={app} />)}
+      </div>
+    </section>
+  )}
+
+  {released.length > 0 && (testing.length > 0 || upcoming.length > 0) && (
+    <div class="divider"></div>
+  )}
 
   {testing.length > 0 && (
     <section class="apps-section">
